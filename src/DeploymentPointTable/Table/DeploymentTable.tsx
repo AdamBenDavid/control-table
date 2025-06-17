@@ -38,19 +38,30 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
                     נקודות פריסה
                 </Typography>
                 {isEditing ?
-                    <button className={styles.saveButton}
-                            style={{display: 'flex', flexDirection: 'row'}}
+                    <Button style={{
+                        borderRadius: '33px',
+                        background: '#4B64D7',
+                        border: '1px solid #e0e0e0',
+                        fontWeight: 'lighter',
+                        color: '#ffffff',
+                        marginLeft: '24px',
+                    }}
                             onClick={toggleEditing}>
                         <img src={saveButton} alt="Edit" className={styles.icon}/>
                         שמור וצא
-                    </button>
+                    </Button>
                     :
-                    <button className={styles.editButton}
-                            style={{display: 'flex', flexDirection: 'row'}}
+                    <Button style={{
+                        borderRadius: '33px',
+                        background: '#ffffff',
+                        border: '1px solid #e0e0e0',
+                        fontWeight: 'lighter',
+                        marginLeft: '24px',
+                    }}
                             onClick={toggleEditing}>
                         <img src={editIcon} alt="Edit" className={styles.icon}/>
                         עריכה
-                    </button>
+                    </Button>
                 }
             </div>
             <Table>
