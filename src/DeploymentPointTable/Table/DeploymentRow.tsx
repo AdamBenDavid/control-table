@@ -1,5 +1,5 @@
 import React from 'react';
-import type {DeploymentPoint} from './types';
+import type {DeploymentPoint} from '../types.ts';
 
 interface Props {
     point: DeploymentPoint;

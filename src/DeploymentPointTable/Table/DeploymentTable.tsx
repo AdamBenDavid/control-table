@@ -1,0 +1,124 @@
+import {
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Tooltip,
+    Typography
+} from '@material-ui/core';
+import styles from './styles.module.scss';
+import type {DeploymentPoint} from '../types.ts';
+import {DeploymentDirections} from '../directions.ts';
+import editIcon from '../icons/Edit.svg';
+import deleteIcon from '../icons/trash.svg';
+import saveButton from '../icons/save.svg';
+import arrowButton from '../icons/Arrow.svg';
+import {useState} from "react";
+import Button from "@material-ui/core/Button";
+import {DeploymentPointDataDrawer} from "../EditDrawers/DeploymentPointDataDrawer/DeploymentPointDataDrawer.tsx";
+
+interface Props {
+    data: DeploymentPoint[];
+    onDelete: (row: DeploymentPoint) => void;
+}
+
+export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
+
+    const [isEditing, setIsEditing] = useState(false);
+    const toggleEditing = () => setIsEditing(!isEditing);
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
+    return (
+        <TableContainer component={Paper} style={{direction: 'rtl'}}>
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                <Typography className={styles.title} style={{fontSize: '18px', fontWeight: 600}}>
+                    נקודות פריסה
+                </Typography>
+                {isEditing ?
+                    <button className={styles.saveButton}
+                            style={{display: 'flex', flexDirection: 'row'}}
+                            onClick={toggleEditing}>
+                        <img src={saveButton} alt="Edit" className={styles.icon}/>
+                        שמור וצא
+                    </button>
+                    :
+                    <button className={styles.editButton}
+                            style={{display: 'flex', flexDirection: 'row'}}
+                            onClick={toggleEditing}>
+                        <img src={editIcon} alt="Edit" className={styles.icon}/>
+                        עריכה
+                    </button>
+                }
+            </div>
+            <Table>
+                <TableHead className={styles.header}>
+                    <TableRow>
+                        <TableCell align="right" style={{fontWeight: 700, color: '#717680'}}>שם נק׳ פריסה</TableCell>
+                        <TableCell align="right" style={{fontWeight: 700, color: '#717680'}}>נ.צ</TableCell>
+                        <TableCell align="right" style={{fontWeight: 700, color: '#717680'}}>חטיבה</TableCell>
+                        <TableCell align="right" style={{fontWeight: 700, color: '#717680'}}>כיוונים ממופים</TableCell>
+                        <TableCell align="right" style={{fontWeight: 700, color: '#717680'}}>יוזרים מקושרים</TableCell>
+                        {isEditing && (
+                            <TableCell align="center" style={{fontWeight: 700, color: '#717680'}}>פעולות</TableCell>
+                        )}
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {data.map((point, i) => (
+                        <TableRow key={i}>
+                            <TableCell align="right"
+                                       className={`${styles.cell} ${isEditing ? styles.underlineOnHover : ''} ${styles.cellWithDivider}`}>
+                                {point.name}
+                            </TableCell>
+                            <TableCell align="right"
+                                       className={`${styles.cell} ${isEditing ? styles.underlineOnHover : ''} ${styles.cellWithDivider}`}>
+                                {`${point.coordinates.lat}/${point.coordinates.lng}`}
+                            </TableCell>
+                            <TableCell align="right"
+                                       className={`${styles.cell} ${isEditing ? styles.underlineOnHover : ''} ${styles.cellWithDivider}`}>
+                                {point.division}
+                            </TableCell>
+                            <TableCell align="right" className={styles.cellWithDivider}>
+                                <div className={styles.directionColumn}>
+                                    <div className={styles.directionLabel}>
+                                        <span className={styles.directionCount}>{point.directions.length}</span>
+                                        <span className={styles.directionText}>
+                                        {point.directions.map(d => DeploymentDirections[d]).join('/')}
+                                     </span>
+                                    </div>
+                                    <Button onClick={() => setDrawerOpen(true)}>
+                                        <img src={arrowButton} alt="Arrow" className={styles.icon}
+                                             style={{marginRight: '15px'}}/>
+                                    </Button>
+                                </div>
+
+                            </TableCell>
+                            <TableCell align="right"
+                                       className={styles.cellWithDivider}>
+                                <div className={styles.directionColumn}>
+                                    <span className={styles.users}>{point.linkedUsersCount}</span>
+                                    <Button onClick={() => setDrawerOpen(true)}>
+                                        <img src={arrowButton} alt="Arrow" className={styles.icon}
+                                             style={{marginRight: '70px'}}/>
+                                    </Button>
+                                </div>
+                            </TableCell>
+                            {isEditing && (
+                                <TableCell align="center">
+                                    <Tooltip title="מחק">
+                                        <img src={deleteIcon} alt="Delete" className={styles.icon}
+                                             onClick={() => onDelete(point)}/>
+                                    </Tooltip>
+                                </TableCell>
+                            )}
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+            <DeploymentPointDataDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} anchor="left"/>
+        </TableContainer>
+    );
+};

@@ -1,7 +1,7 @@
 // src/App.tsx
 import React from 'react';
-import {DeploymentTable} from "./ControlTable/DeploymentTable.tsx";
-import {mockDeploymentPoints} from "./ControlTable/mockData.ts";
+import {DeploymentTable} from "./DeploymentPointTable/Table/DeploymentTable.tsx";
+import {mockDeploymentPoints} from "./DeploymentPointTable/mockData.ts";
 
 const App: React.FC = () => {
 
@@ -14,14 +14,13 @@ const App: React.FC = () => {
             alignItems: 'center'
         }}>
             <div style={{
-                width: '65%',
+                width: '75%',
                 maxHeight: '65vh',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center'
             }}>
                 <DeploymentTable data={mockDeploymentPoints} onDelete={() => {
-                }} onEdit={() => {
                 }}/>
             </div>
         </div>
