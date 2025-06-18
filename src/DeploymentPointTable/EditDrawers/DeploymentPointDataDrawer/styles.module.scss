@@ -1,0 +1,99 @@
+.drawer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 576px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 24px 35px 24px;
+  flex-grow: 1;
+  gap: 30px;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 24px;
+  font-family: heebo, serif;
+  color: #535862;
+}
+
+.inputTitle {
+  font-weight: 700;
+  font-size: 14px;
+  font-family: heebo, serif;
+  color: #121212;
+}
+
+.titleAndInput {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.coordinates {
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse;
+  gap: 10px;
+}
+
+.buttonSection {
+  display: flex;
+  flex-direction: row;
+  padding: 28px 36px;
+  gap: 16px;
+  height: 103px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: white;
+  box-shadow: 0px -3px 8px rgba(173, 173, 173, 0.15);
+}
+
+.saveButton {
+  background-color: rgba(75, 100, 215, 1);
+  border-radius: 30px;
+}
+
+.selectIcon {
+  left: 7px !important;
+  right: auto !important;
+  position: absolute !important;
+}
+
+.divisionErrorText {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.66;
+  color: #f44336;
+  margin-top: 4px;
+}
+
+.FormErrorText {
+  text-align: right;
+}
+
+.select {
+  text-align: right;
+}
+
+.selectIcon {
+  left: 7px;
+  right: auto;
+}
+
+.selectIcon {
+  left: 7px !important;
+  right: auto !important;
+  position: absolute !important;
+}
+
+.formControl {
+  width: 250px;
+  direction: rtl;
+}

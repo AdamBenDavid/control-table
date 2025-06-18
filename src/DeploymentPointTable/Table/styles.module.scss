@@ -1,0 +1,88 @@
+.cellWithDivider {
+  border-left: 1px solid #e0e0e0;
+}
+
+.underlineOnHover {
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px; // Optional: makes it look cleaner
+  }
+}
+
+.title {
+  padding: 15px 24px 15px;
+}
+
+.header {
+  background: #e9eaeb;
+  border: 1px solid #e0e0e0;
+  padding: 6px 12px;
+}
+
+.numberStyle {
+  font-weight: bold;
+  color: #333333;
+  font-size: 14px;
+  align-content: center;
+}
+
+.directionLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.directionCount {
+  @extend .numberStyle;
+}
+
+.users {
+  @extend .numberStyle;
+}
+
+.directionColumn {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.directionText {
+  font-size: 13px;
+  color: #888888;
+}
+
+
+.editButton {
+  border-radius: 33px;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  font-family: heebo, serif;
+  font-weight: lighter;
+  margin-left: 24px;
+}
+
+.saveButton {
+  border-radius: 33px;
+  background: #4B64D7;
+  border: 1px solid #e0e0e0;
+  font-family: heebo, serif;
+  font-weight: lighter;
+  color: #ffffff;
+  margin-left: 24px;
+}
+
+.directionArrowIcon {
+  margin-left: 5px;
+  margin-right: 15px;
+}
+
+.usersArrowIcon {
+  margin-left: 5px;
+  margin-right: 70px;
+}
+
+.clickableCell {
+  cursor: pointer;
+}

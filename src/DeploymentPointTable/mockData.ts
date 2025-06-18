@@ -1,0 +1,60 @@
+import type {DeploymentPoint} from './types';
+
+export const mockDeploymentPoints: DeploymentPoint[] = [
+    {
+        id: 1,
+        name: 'צומת גני',
+        coordinates: {lat: 12345678, lng: 12345678},
+        division: 'עציון',
+        directions: ['NORTH', 'SOUTH', 'EAST', 'WEST'],
+        linkedUsersCount: 32,
+    },
+    {
+        id: 2,
+        name: 'צומת מגוש',
+        coordinates: {lat: 12345678, lng: 12345678},
+        division: 'משה',
+        directions: ['SOUTH', 'WEST'],
+        linkedUsersCount: 20,
+    },
+    {
+        id: 3,
+        name: 'צומת יעקב',
+        coordinates: {lat: 12345678, lng: 12345678},
+        division: 'עציון',
+        directions: ['NORTH', 'EAST', 'WEST'],
+        linkedUsersCount: 30,
+    },
+    {
+        id: 4,
+        name: 'צומת הלב',
+        coordinates: {lat: 12345678, lng: 12345678},
+        division: 'אפרים',
+        directions: ['WEST'],
+        linkedUsersCount: 14,
+    },
+    {
+        id: 5,
+        name: 'צומת החושך',
+        coordinates: {lat: 12345678, lng: 12345678},
+        division: 'בנימין',
+        directions: ['NORTH', 'EAST', 'WEST'],
+        linkedUsersCount: 12,
+    },
+    {
+        id: 6,
+        name: 'צומת האור',
+        coordinates: {lat: 12345678, lng: 12345678},
+        division: 'בנימין',
+        directions: ['NORTH', 'EAST', 'WEST'],
+        linkedUsersCount: 40,
+    },
+    {
+        id: 7,
+        name: 'צומת חוויות',
+        coordinates: {lat: 12345678, lng: 12345678},
+        division: '417',
+        directions: ['SOUTH', 'WEST'],
+        linkedUsersCount: 10,
+    },
+];
