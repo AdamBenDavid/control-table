@@ -1,14 +1,18 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import styles from './styles.module.scss';
 import TextField from '@material-ui/core/TextField';
 import {FormControl, type InputBaseComponentProps, MenuItem, Select,} from '@material-ui/core';
 import {type Division, Divisions} from "../../divisions.ts";
+import type {DeploymentPoint} from "../../types.ts";
 
 interface Props {
     open: boolean;
     onClose: () => void;
+    point: DeploymentPoint | null;
+    onSave: (updatedPoint: DeploymentPoint) => void;
+
     anchor?: 'left' | 'right' | 'top' | 'bottom';
 }
 
@@ -25,7 +29,7 @@ const handleNumericChange = (setter: (val: string) => void) =>
         setter(onlyDigits);
     };
 
-export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, anchor = 'left'}) => {
+export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, point, onSave, anchor = 'left'}) => {
     const [lat, setLat] = useState('');
     const [lng, setLng] = useState('');
     const [division, setDivision] = useState<Division | ''>('');
@@ -54,10 +58,29 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, ancho
         setErrors(newErrors);
 
         const hasErrors = Object.values(newErrors).some(Boolean);
-        if (!hasErrors) {
-            onClose();
+        if (!hasErrors && point) {
+            const updatedPoint: DeploymentPoint = {
+                ...point,
+                name: deploymentName,
+                coordinates: {
+                    lat: Number(lat),
+                    lng: Number(lng),
+                },
+                division,
+            };
+
+            onSave(updatedPoint);
         }
     };
+
+    useEffect(() => {
+        if (point) {
+            setDeploymentName(point.name);
+            setLat(point.coordinates.lat.toString());
+            setLng(point.coordinates.lng.toString());
+            setDivision(point.division as Division);
+        }
+    }, [point]);
 
     return (
         <Drawer anchor={anchor} open={open} onClose={onClose} hideBackdrop>

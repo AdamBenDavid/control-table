@@ -30,6 +30,26 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
     const [isEditing, setIsEditing] = useState(false);
     const toggleEditing = () => setIsEditing(!isEditing);
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [selectedPoint, setSelectedPoint] = useState<DeploymentPoint | null>(null);
+    const [dataState, setDataState] = useState<DeploymentPoint[]>(data);
+
+    const onEdit = (point: DeploymentPoint) => {
+        if (isEditing) {
+            setSelectedPoint(point);
+            setDrawerOpen(true);
+        }
+    };
+
+    const handlePointUpdate = (updatedPoint: DeploymentPoint) => {
+        const newData = dataState.map((p) =>
+            p.id === updatedPoint.id ? updatedPoint : p
+        );
+
+        setDataState(newData);
+        setDrawerOpen(false);
+        setSelectedPoint(null);
+    };
+
 
     return (
         <TableContainer component={Paper} style={{direction: 'rtl'}}>
@@ -48,7 +68,7 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
                     }}
                             onClick={toggleEditing}>
                         <img src={saveButton} alt="Edit" className={styles.icon}/>
-                        שמור וצא
+                        צא ממצב עריכה
                     </Button>
                     :
                     <Button style={{
@@ -78,19 +98,34 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.map((point, i) => (
+                    {dataState.map((point, i) => (
                         <TableRow key={i}>
                             <TableCell align="right"
                                        className={`${styles.cell} ${isEditing ? styles.underlineOnHover : ''} ${styles.cellWithDivider}`}>
-                                {point.name}
+                                <div
+                                    className={isEditing ? styles.clickableCell : undefined}
+                                    onClick={() => onEdit(point)}
+                                >
+                                    {point.name}
+                                </div>
                             </TableCell>
                             <TableCell align="right"
                                        className={`${styles.cell} ${isEditing ? styles.underlineOnHover : ''} ${styles.cellWithDivider}`}>
-                                {`${point.coordinates.lat}/${point.coordinates.lng}`}
+                                <div
+                                    className={isEditing ? styles.clickableCell : undefined}
+                                    onClick={() => onEdit(point)}
+                                >
+                                    {`${point.coordinates.lat}/${point.coordinates.lng}`}
+                                </div>
                             </TableCell>
                             <TableCell align="right"
                                        className={`${styles.cell} ${isEditing ? styles.underlineOnHover : ''} ${styles.cellWithDivider}`}>
-                                {point.division}
+                                <div
+                                    className={isEditing ? styles.clickableCell : undefined}
+                                    onClick={() => onEdit(point)}
+                                >
+                                    {point.division}
+                                </div>
                             </TableCell>
                             <TableCell align="right" className={styles.cellWithDivider}>
                                 <div className={styles.directionColumn}>
@@ -100,20 +135,19 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
                                         {point.directions.map(d => DeploymentDirections[d]).join('/')}
                                      </span>
                                     </div>
-                                    <Button onClick={() => setDrawerOpen(true)}>
-                                        <img src={arrowButton} alt="Arrow" className={styles.icon}
-                                             style={{marginRight: '15px'}}/>
+                                    <Button onClick={() => {
+                                    }}>
+                                        <img src={arrowButton} alt="Arrow" className={styles.directionArrowIcon}/>
                                     </Button>
                                 </div>
-
                             </TableCell>
                             <TableCell align="right"
                                        className={styles.cellWithDivider}>
                                 <div className={styles.directionColumn}>
                                     <span className={styles.users}>{point.linkedUsersCount}</span>
-                                    <Button onClick={() => setDrawerOpen(true)}>
-                                        <img src={arrowButton} alt="Arrow" className={styles.icon}
-                                             style={{marginRight: '70px'}}/>
+                                    <Button onClick={() => {
+                                    }}>
+                                        <img src={arrowButton} alt="Arrow" className={styles.usersArrowIcon}/>
                                     </Button>
                                 </div>
                             </TableCell>
@@ -129,7 +163,16 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
                     ))}
                 </TableBody>
             </Table>
-            <DeploymentPointDataDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} anchor="left"/>
+            <DeploymentPointDataDrawer
+                open={drawerOpen}
+                onClose={() => {
+                    setDrawerOpen(false);
+                    setSelectedPoint(null);
+                }}
+                anchor="left"
+                point={selectedPoint}
+                onSave={handlePointUpdate}
+            />
         </TableContainer>
     );
 };
