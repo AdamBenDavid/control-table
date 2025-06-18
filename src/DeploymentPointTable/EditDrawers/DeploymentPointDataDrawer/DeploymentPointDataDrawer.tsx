@@ -3,7 +3,7 @@ import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import styles from './styles.module.scss';
 import TextField from '@material-ui/core/TextField';
-import {FormControl, type InputBaseComponentProps, makeStyles, MenuItem, Select,} from '@material-ui/core';
+import {FormControl, type InputBaseComponentProps, MenuItem, Select,} from '@material-ui/core';
 import {type Division, Divisions} from "../../divisions.ts";
 
 interface Props {
@@ -11,20 +11,6 @@ interface Props {
     onClose: () => void;
     anchor?: 'left' | 'right' | 'top' | 'bottom';
 }
-
-const useStyles = makeStyles(() => ({
-    formControl: {
-        minWidth: 250,
-        direction: 'rtl',
-    },
-    select: {
-        textAlign: 'right',
-    },
-    icon: {
-        left: 7,
-        right: 'auto',
-    },
-}));
 
 const numericInputProps: InputBaseComponentProps = {
     maxLength: 8,
@@ -40,13 +26,37 @@ const handleNumericChange = (setter: (val: string) => void) =>
     };
 
 export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, anchor = 'left'}) => {
-    const classes = useStyles();
     const [lat, setLat] = useState('');
     const [lng, setLng] = useState('');
     const [division, setDivision] = useState<Division | ''>('');
+    const [deploymentName, setDeploymentName] = useState('');
+
+    const [errors, setErrors] = useState({
+        deploymentName: false,
+        lat: false,
+        lng: false,
+        division: false,
+    });
+
 
     const handleDivisionChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setDivision(event.target.value as Division);
+    };
+
+    const handleSave = () => {
+        const newErrors = {
+            deploymentName: deploymentName.trim() === '',
+            lat: lat.length < 8,
+            lng: lng.length < 8,
+            division: division === '',
+        };
+
+        setErrors(newErrors);
+
+        const hasErrors = Object.values(newErrors).some(Boolean);
+        if (!hasErrors) {
+            onClose();
+        }
     };
 
     return (
@@ -60,7 +70,12 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, ancho
                         <TextField
                             variant="standard"
                             dir="rtl"
+                            value={deploymentName}
+                            onChange={(e) => setDeploymentName(e.target.value)}
                             inputProps={{style: {fontSize: '14px'}, maxLength: 20}}
+                            error={errors.deploymentName}
+                            helperText={errors.deploymentName && 'יש לבחור שם לנקודת פריסה'}
+                            FormHelperTextProps={{style: {textAlign: 'right'}}}
                         />
                     </div>
 
@@ -74,6 +89,9 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, ancho
                                 value={lat}
                                 onChange={handleNumericChange(setLat)}
                                 inputProps={numericInputProps}
+                                error={errors.lat}
+                                helperText={errors.lat && 'יש להזין לפחות 8 ספרות'}
+                                FormHelperTextProps={{style: {textAlign: 'right'}}}
                             />
                             <span>/</span>
                             <span>רוחב</span>
@@ -83,33 +101,32 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, ancho
                                 value={lng}
                                 onChange={handleNumericChange(setLng)}
                                 inputProps={numericInputProps}
+                                error={errors.lng}
+                                helperText={errors.lng && 'יש להזין לפחות 8 ספרות'}
+                                FormHelperTextProps={{style: {textAlign: 'right'}}}
                             />
                         </div>
                     </div>
 
                     <div className={styles.titleAndInput}>
                         <span className={styles.inputTitle}>חטיבה</span>
-                        <FormControl variant="standard" className={classes.formControl}>
+                        <FormControl
+                            variant="standard"
+                            className={styles.formControl}
+                            error={errors.division}
+                        >
                             <Select
-                                labelId="division-label"
-                                id="division-select"
                                 value={division}
                                 onChange={handleDivisionChange}
                                 classes={{
-                                    icon: classes.icon,
+                                    icon: styles.selectIcon, // use the class from SCSS
                                 }}
                                 MenuProps={{
-                                    anchorOrigin: {
-                                        vertical: 'bottom',
-                                        horizontal: 'right',
-                                    },
-                                    transformOrigin: {
-                                        vertical: 'top',
-                                        horizontal: 'right',
-                                    },
-                                    getContentAnchorEl: null,
                                     PaperProps: {
-                                        style: {direction: 'rtl', textAlign: 'right'},
+                                        style: {
+                                            direction: 'rtl',
+                                            textAlign: 'right',
+                                        },
                                     },
                                 }}
                             >
@@ -119,12 +136,20 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, ancho
                                     </MenuItem>
                                 ))}
                             </Select>
+                            {errors.division && (
+                                <span className={styles.divisionErrorText}>
+                                 יש לבחור חטיבה
+                                </span>
+                            )}
                         </FormControl>
                     </div>
                 </div>
 
                 <div className={styles.buttonSection}>
-                    <Button style={{backgroundColor: '#4B64D7', borderRadius: '30px', color: 'white'}}>
+                    <Button
+                        style={{backgroundColor: '#4B64D7', borderRadius: '30px', color: 'white'}}
+                        onClick={handleSave}
+                    >
                         שנה ושמור
                     </Button>
                     <Button style={{color: '#4B64D7'}} onClick={onClose}>

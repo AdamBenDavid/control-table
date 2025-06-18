@@ -6,20 +6,24 @@ import {mockDeploymentPoints} from "./DeploymentPointTable/mockData.ts";
 const App: React.FC = () => {
 
     return (
-        <div style={{
-            height: '100vh',
-            width: '100vw',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-        }}>
-            <div style={{
-                width: '75%',
-                maxHeight: '65vh',
+        <div
+            dir="rtl"
+            style={{
+                height: '100vh',
+                width: '100vw',
                 display: 'flex',
-                flexDirection: 'column',
+                justifyContent: 'center',
                 alignItems: 'center'
             }}>
+            <div
+                dir="rtl"
+                style={{
+                    width: '75%',
+                    maxHeight: '65vh',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center'
+                }}>
                 <DeploymentTable data={mockDeploymentPoints} onDelete={() => {
                 }}/>
             </div>

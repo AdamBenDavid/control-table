@@ -65,4 +65,35 @@
   position: absolute !important;
 }
 
+.divisionErrorText {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.66;
+  color: #f44336;
+  margin-top: 4px;
+}
 
+.FormErrorText {
+  text-align: right;
+}
+
+.select {
+  text-align: right;
+}
+
+.selectIcon {
+  left: 7px;
+  right: auto;
+}
+
+.selectIcon {
+  left: 7px !important;
+  right: auto !important;
+  position: absolute !important;
+}
+
+.formControl {
+  width: 250px;
+  direction: rtl;
+}
