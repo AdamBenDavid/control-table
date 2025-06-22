@@ -13,7 +13,7 @@ export const mockDeploymentPoints: DeploymentPoint[] = [
         id: 2,
         name: 'צומת מגוש',
         coordinates: {lat: 12345678, lng: 12345678},
-        division: 'משה',
+        division: 'מנשה',
         directions: ['SOUTH', 'WEST'],
         linkedUsersCount: 20,
     },
