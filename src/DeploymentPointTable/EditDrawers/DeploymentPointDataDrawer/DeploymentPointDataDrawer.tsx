@@ -77,118 +77,116 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, point
 
     return (
         <BaseDrawer open={open} onClose={onClose}>
-            <div className={styles.drawer}>
-                <div className={styles.container}>
+            <div className={styles.container}>
                 <span className={styles.title}>
                     {point?.name} - עריכת נקודת פריסה
                 </span>
-                    <div className={styles.titleAndInput}>
-                        <span className={styles.inputTitle}>שם נקודת פריסה</span>
+                <div className={styles.titleAndInput}>
+                    <span className={styles.inputTitle}>שם נקודת פריסה</span>
+                    <Controller
+                        name="deploymentName"
+                        control={control}
+                        rules={{required: true}}
+                        render={({field}) => (
+                            <TextField
+                                variant="standard"
+                                dir="rtl"
+                                {...field}
+                                inputProps={{style: {fontSize: '14px'}, maxLength: 20}}
+                                error={!!errors.deploymentName}
+                                helperText={errors.deploymentName && 'יש לבחור שם לנקודת פריסה'}
+                                FormHelperTextProps={{style: {textAlign: 'right'}}}
+                            />
+                        )}
+                    />
+                </div>
+                <div className={styles.titleAndInput}>
+                    <span className={styles.inputTitle}>נ.צ</span>
+                    <div className={styles.coordinates}>
+                        <span>אורך</span>
                         <Controller
-                            name="deploymentName"
+                            name="lat"
                             control={control}
-                            rules={{required: true}}
+                            rules={{required: true, minLength: 8}}
                             render={({field}) => (
                                 <TextField
                                     variant="standard"
                                     dir="rtl"
-                                    {...field}
-                                    inputProps={{style: {fontSize: '14px'}, maxLength: 20}}
-                                    error={!!errors.deploymentName}
-                                    helperText={errors.deploymentName && 'יש לבחור שם לנקודת פריסה'}
+                                    value={field.value}
+                                    onChange={handleNumericChange(field.onChange)}
+                                    inputProps={numericInputProps}
+                                    error={!!errors.lat}
+                                    helperText={errors.lat && 'יש להזין לפחות 8 ספרות'}
+                                    FormHelperTextProps={{style: {textAlign: 'right'}}}
+                                />
+                            )}
+                        />
+                        <span>/</span>
+                        <span>רוחב</span>
+                        <Controller
+                            name="lng"
+                            control={control}
+                            rules={{required: true, minLength: 8}}
+                            render={({field}) => (
+                                <TextField
+                                    variant="standard"
+                                    dir="rtl"
+                                    value={field.value}
+                                    onChange={handleNumericChange(field.onChange)}
+                                    inputProps={numericInputProps}
+                                    error={!!errors.lng}
+                                    helperText={errors.lng && 'יש להזין לפחות 8 ספרות'}
                                     FormHelperTextProps={{style: {textAlign: 'right'}}}
                                 />
                             )}
                         />
                     </div>
-                    <div className={styles.titleAndInput}>
-                        <span className={styles.inputTitle}>נ.צ</span>
-                        <div className={styles.coordinates}>
-                            <span>אורך</span>
-                            <Controller
-                                name="lat"
-                                control={control}
-                                rules={{required: true, minLength: 8}}
-                                render={({field}) => (
-                                    <TextField
-                                        variant="standard"
-                                        dir="rtl"
-                                        value={field.value}
-                                        onChange={handleNumericChange(field.onChange)}
-                                        inputProps={numericInputProps}
-                                        error={!!errors.lat}
-                                        helperText={errors.lat && 'יש להזין לפחות 8 ספרות'}
-                                        FormHelperTextProps={{style: {textAlign: 'right'}}}
-                                    />
-                                )}
-                            />
-                            <span>/</span>
-                            <span>רוחב</span>
-                            <Controller
-                                name="lng"
-                                control={control}
-                                rules={{required: true, minLength: 8}}
-                                render={({field}) => (
-                                    <TextField
-                                        variant="standard"
-                                        dir="rtl"
-                                        value={field.value}
-                                        onChange={handleNumericChange(field.onChange)}
-                                        inputProps={numericInputProps}
-                                        error={!!errors.lng}
-                                        helperText={errors.lng && 'יש להזין לפחות 8 ספרות'}
-                                        FormHelperTextProps={{style: {textAlign: 'right'}}}
-                                    />
-                                )}
-                            />
-                        </div>
-                    </div>
-                    <div className={styles.titleAndInput}>
-                        <span className={styles.inputTitle}>חטיבה</span>
-                        <Controller
-                            name="division"
-                            control={control}
-                            rules={{required: true}}
-                            render={({field}) => (
-                                <FormControl
-                                    variant="standard"
-                                    className={styles.formControl}
-                                    error={!!errors.division}
+                </div>
+                <div className={styles.titleAndInput}>
+                    <span className={styles.inputTitle}>חטיבה</span>
+                    <Controller
+                        name="division"
+                        control={control}
+                        rules={{required: true}}
+                        render={({field}) => (
+                            <FormControl
+                                variant="standard"
+                                className={styles.formControl}
+                                error={!!errors.division}
+                            >
+                                <Select
+                                    {...field}
+                                    classes={{icon: styles.selectIcon}}
+                                    MenuProps={{
+                                        PaperProps: {
+                                            style: {direction: 'rtl', textAlign: 'right'},
+                                        },
+                                    }}
                                 >
-                                    <Select
-                                        {...field}
-                                        classes={{icon: styles.selectIcon}}
-                                        MenuProps={{
-                                            PaperProps: {
-                                                style: {direction: 'rtl', textAlign: 'right'},
-                                            },
-                                        }}
-                                    >
-                                        {Object.values(Divisions).map((name) => (
-                                            <MenuItem key={name} value={name}>
-                                                {name}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                    {errors.division && (
-                                        <span className={styles.divisionErrorText}>יש לבחור חטיבה</span>
-                                    )}
-                                </FormControl>
-                            )}
-                        />
-                    </div>
+                                    {Object.values(Divisions).map((name) => (
+                                        <MenuItem key={name} value={name}>
+                                            {name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                                {errors.division && (
+                                    <span className={styles.divisionErrorText}>יש לבחור חטיבה</span>
+                                )}
+                            </FormControl>
+                        )}
+                    />
                 </div>
-                <div className={styles.buttonSection}>
-                    <Button
-                        style={{backgroundColor: '#4B64D7', borderRadius: '30px', color: 'white'}}
-                        onClick={handleSubmit(onSubmit)}
-                    >
-                        שנה ושמור
-                    </Button>
-                    <Button style={{color: '#4B64D7'}} onClick={onClose}>
-                        ביטול
-                    </Button>
-                </div>
+            </div>
+            <div className={styles.buttonSection}>
+                <Button
+                    style={{backgroundColor: '#4B64D7', borderRadius: '30px', color: 'white'}}
+                    onClick={handleSubmit(onSubmit)}
+                >
+                    שנה ושמור
+                </Button>
+                <Button style={{color: '#4B64D7'}} onClick={onClose}>
+                    ביטול
+                </Button>
             </div>
         </BaseDrawer>
     );

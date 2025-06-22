@@ -1,0 +1,31 @@
+.container {
+  width: 495px;
+  height: 321px;
+  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid #D5D5D5; // or Gray/300
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cardBody {
+  align-items: flex-end;
+}
+
+.deleteIcon {
+
+}
+
+.title {
+  font-weight: 700;
+  font-size: 14px;
+  font-family: heebo, serif;
+  color: #121212;
+}
+
+.input {
+}
+
+.deploymentPointMap {
+}

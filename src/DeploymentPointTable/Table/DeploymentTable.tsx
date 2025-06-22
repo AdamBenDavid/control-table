@@ -185,7 +185,7 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
             />
             <DirectionDrawer
                 open={directionDrawer}
-                onClose={() => setDeploymentPointDataDrawer(false)}
+                onClose={() => setDirectionDrawer(false)}
                 point={selectedPoint}
                 onSave={handlePointUpdate}
             />
