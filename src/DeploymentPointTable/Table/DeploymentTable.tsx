@@ -53,7 +53,6 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
 
     return (
         <>
-
             <TableContainer component={Paper} style={{direction: 'rtl'}}>
                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                     <Typography className={styles.title} style={{fontSize: '18px', fontWeight: 600}}>
