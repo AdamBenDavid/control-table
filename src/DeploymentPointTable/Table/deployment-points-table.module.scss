@@ -1,0 +1,159 @@
+.tableContainer {
+  background-color: white;
+  border: 1px solid #E9EAEB;
+  border-radius: 12px;
+  padding: 1rem;
+  width: 70%;
+}
+
+.headerRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #E9EAEB;
+}
+
+.cellWithDivider {
+  border-left: 1px solid #e0e0e0;
+}
+
+.underlineOnHover {
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px; // Optional: makes it look cleaner
+  }
+}
+
+.title {
+  padding: 15px 24px 15px;
+}
+
+.header {
+  background: #e9eaeb;
+  font-weight: 600;
+  border: 1px solid #e0e0e0;
+  padding: 6px 12px;
+}
+
+.numberStyle {
+  align-content: center;
+  color: #333333;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.directionLabel {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+}
+
+.directionCount {
+  @extend .numberStyle;
+}
+
+.users {
+  @extend .numberStyle;
+}
+
+.directionColumn {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.directionDetails {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.directionText {
+  color: #888888;
+  font-size: 13px;
+}
+
+
+.editButton {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 33px;
+  font-family: heebo, serif;
+  font-weight: lighter;
+  margin-left: 24px;
+}
+
+.saveButton {
+  background: #4B64D7;
+  border: 1px solid #e0e0e0;
+  border-radius: 33px;
+  color: #ffffff;
+  font-family: heebo, serif;
+  font-weight: lighter;
+  margin-left: 24px;
+}
+
+.directionArrowIcon {
+  margin-left: 5px;
+  margin-right: 15px;
+}
+
+.usersArrowIcon {
+  margin-left: 5px;
+  margin-right: 70px;
+}
+
+.deleteTooltip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 72px;
+  transition: all 0.2s ease-in-out;
+
+  & > img {
+    width: 20px;
+    aspect-ratio: 1;
+  }
+
+  &:hover {
+    background-color: #FFE9EC;
+    cursor: pointer;
+  }
+
+  &:active {
+    background-color: #FFC9CD;
+  }
+}
+
+.paginationFooter {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  font-size: 14px;
+  direction: rtl;
+}
+
+.paginationInfo {
+  font-weight: 500;
+}
+
+.paginationButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.paginationButton {
+  width: 16px;
+  height: 16px;
+  aspect-ratio: 1;
+  padding: 0;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #f5f5f5;
+}
+

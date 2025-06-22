@@ -1,0 +1,1 @@
+export const TABLE_ACTIONS_COLUMN_ID = 'actions' as const
