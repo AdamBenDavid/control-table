@@ -19,6 +19,7 @@ import arrowButton from '../icons/Arrow.svg';
 import {useState} from "react";
 import Button from "@material-ui/core/Button";
 import {DeploymentPointDataDrawer} from "../EditDrawers/DeploymentPointDataDrawer/DeploymentPointDataDrawer.tsx";
+import {DirectionDrawer} from "../EditDrawers/DirectionsDrawer/DirectionDrawer.tsx";
 
 interface Props {
     data: DeploymentPoint[];
@@ -29,14 +30,20 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
 
     const [isEditing, setIsEditing] = useState(false);
     const toggleEditing = () => setIsEditing(!isEditing);
-    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [deploymentPointDataDrawer, setDeploymentPointDataDrawer] = useState(false);
+    const [directionDrawer, setDirectionDrawer] = useState(false);
     const [selectedPoint, setSelectedPoint] = useState<DeploymentPoint | null>(null);
     const [dataState, setDataState] = useState<DeploymentPoint[]>(data);
 
-    const onEdit = (point: DeploymentPoint) => {
+    const OnDirectionEdit = (point: DeploymentPoint) => {
+        setSelectedPoint(point);
+        setDirectionDrawer(true);
+    };
+
+    const onDeploymentPointDataEdit = (point: DeploymentPoint) => {
         if (isEditing) {
             setSelectedPoint(point);
-            setDrawerOpen(true);
+            setDeploymentPointDataDrawer(true);
         }
     };
 
@@ -46,7 +53,7 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
         );
 
         setDataState(newData);
-        setDrawerOpen(false);
+        setDeploymentPointDataDrawer(false);
         setSelectedPoint(null);
     };
 
@@ -108,7 +115,7 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
                                            className={`${styles.cell} ${isEditing ? styles.underlineOnHover : ''} ${styles.cellWithDivider}`}>
                                     <div
                                         className={isEditing ? styles.clickableCell : undefined}
-                                        onClick={() => onEdit(point)}
+                                        onClick={() => onDeploymentPointDataEdit(point)}
                                     >
                                         {point.name}
                                     </div>
@@ -117,7 +124,7 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
                                            className={`${styles.cell} ${isEditing ? styles.underlineOnHover : ''} ${styles.cellWithDivider}`}>
                                     <div
                                         className={isEditing ? styles.clickableCell : undefined}
-                                        onClick={() => onEdit(point)}
+                                        onClick={() => onDeploymentPointDataEdit(point)}
                                     >
                                         {`${point.coordinates.lat}/${point.coordinates.lng}`}
                                     </div>
@@ -126,7 +133,7 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
                                            className={`${styles.cell} ${isEditing ? styles.underlineOnHover : ''} ${styles.cellWithDivider}`}>
                                     <div
                                         className={isEditing ? styles.clickableCell : undefined}
-                                        onClick={() => onEdit(point)}
+                                        onClick={() => onDeploymentPointDataEdit(point)}
                                     >
                                         {point.division}
                                     </div>
@@ -139,8 +146,7 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
                                         {point.directions.map(d => DeploymentDirections[d]).join('/')}
                                      </span>
                                         </div>
-                                        <Button onClick={() => {
-                                        }}>
+                                        <Button onClick={() => OnDirectionEdit(point)}>
                                             <img src={arrowButton} alt="Arrow" className={styles.directionArrowIcon}/>
                                         </Button>
                                     </div>
@@ -169,12 +175,17 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
                 </Table>
             </TableContainer>
             <DeploymentPointDataDrawer
-                open={drawerOpen}
+                open={deploymentPointDataDrawer}
                 onClose={() => {
-                    setDrawerOpen(false);
+                    setDeploymentPointDataDrawer(false);
                     setSelectedPoint(null);
                 }}
-                anchor="left"
+                point={selectedPoint}
+                onSave={handlePointUpdate}
+            />
+            <DirectionDrawer
+                open={directionDrawer}
+                onClose={() => setDeploymentPointDataDrawer(false)}
                 point={selectedPoint}
                 onSave={handlePointUpdate}
             />

@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
 import styles from './styles.module.scss';
 import TextField from '@material-ui/core/TextField';
@@ -7,14 +6,13 @@ import {FormControl, type InputBaseComponentProps, MenuItem, Select,} from '@mat
 import {type Division, Divisions} from "../../divisions.ts";
 import type {DeploymentPoint} from "../../types.ts";
 import {Controller, useForm} from 'react-hook-form';
+import {BaseDrawer} from "../BaseDrawer/BaseDrawer.tsx";
 
 interface Props {
     open: boolean;
     onClose: () => void;
     point: DeploymentPoint | null;
     onSave: (updatedPoint: DeploymentPoint) => void;
-
-    anchor?: 'left' | 'right' | 'top' | 'bottom';
 }
 
 const numericInputProps: InputBaseComponentProps = {
@@ -37,7 +35,7 @@ type FormData = {
     division: Division | '';
 }
 
-export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, point, onSave, anchor = 'left'}) => {
+export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, point, onSave}) => {
     const {
         control,
         handleSubmit,
@@ -78,7 +76,7 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, point
     }, [point, reset]);
 
     return (
-        <Drawer anchor={anchor} open={open} onClose={onClose} hideBackdrop>
+        <BaseDrawer open={open} onClose={onClose}>
             <div className={styles.drawer}>
                 <div className={styles.container}>
                 <span className={styles.title}>
@@ -192,6 +190,6 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, point
                     </Button>
                 </div>
             </div>
-        </Drawer>
+        </BaseDrawer>
     );
 };
