@@ -95,13 +95,13 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
                 <Table>
                     <TableHead className={styles.header}>
                         <TableRow>
-                            <TableCell align="right" style={{fontWeight: 700, color: '#717680'}}>שם נק׳
+                            <TableCell align="left" style={{fontWeight: 700, color: '#717680'}}>שם נק׳
                                 פריסה</TableCell>
-                            <TableCell align="right" style={{fontWeight: 700, color: '#717680'}}>נ.צ</TableCell>
-                            <TableCell align="right" style={{fontWeight: 700, color: '#717680'}}>חטיבה</TableCell>
-                            <TableCell align="right" style={{fontWeight: 700, color: '#717680'}}>כיוונים
+                            <TableCell align="left" style={{fontWeight: 700, color: '#717680'}}>נ.צ</TableCell>
+                            <TableCell align="left" style={{fontWeight: 700, color: '#717680'}}>חטיבה</TableCell>
+                            <TableCell align="left" style={{fontWeight: 700, color: '#717680'}}>כיוונים
                                 ממופים</TableCell>
-                            <TableCell align="right" style={{fontWeight: 700, color: '#717680'}}>יוזרים
+                            <TableCell align="left" style={{fontWeight: 700, color: '#717680'}}>יוזרים
                                 מקושרים</TableCell>
                             {isEditing && (
                                 <TableCell align="center" style={{fontWeight: 700, color: '#717680'}}>פעולות</TableCell>
@@ -111,7 +111,7 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
                     <TableBody>
                         {dataState.map((point, i) => (
                             <TableRow key={i}>
-                                <TableCell align="right"
+                                <TableCell align="left"
                                            className={`${styles.cell} ${isEditing ? styles.underlineOnHover : ''} ${styles.cellWithDivider}`}>
                                     <div
                                         className={isEditing ? styles.clickableCell : undefined}
@@ -120,7 +120,7 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
                                         {point.name}
                                     </div>
                                 </TableCell>
-                                <TableCell align="right"
+                                <TableCell align="left"
                                            className={`${styles.cell} ${isEditing ? styles.underlineOnHover : ''} ${styles.cellWithDivider}`}>
                                     <div
                                         className={isEditing ? styles.clickableCell : undefined}
@@ -129,7 +129,7 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
                                         {`${point.coordinates.lat}/${point.coordinates.lng}`}
                                     </div>
                                 </TableCell>
-                                <TableCell align="right"
+                                <TableCell align="left"
                                            className={`${styles.cell} ${isEditing ? styles.underlineOnHover : ''} ${styles.cellWithDivider}`}>
                                     <div
                                         className={isEditing ? styles.clickableCell : undefined}
@@ -138,7 +138,7 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
                                         {point.division}
                                     </div>
                                 </TableCell>
-                                <TableCell align="right" className={styles.cellWithDivider}>
+                                <TableCell align="left" className={styles.cellWithDivider}>
                                     <div className={styles.directionColumn}>
                                         <div className={styles.directionLabel}>
                                             <span className={styles.directionCount}>{point.directions.length}</span>
@@ -151,7 +151,7 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
                                         </Button>
                                     </div>
                                 </TableCell>
-                                <TableCell align="right"
+                                <TableCell align="left"
                                            className={styles.cellWithDivider}>
                                     <div className={styles.directionColumn}>
                                         <span className={styles.users}>{point.linkedUsersCount}</span>

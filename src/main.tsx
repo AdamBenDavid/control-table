@@ -1,9 +1,10 @@
 import ReactDOM from 'react-dom';
 import App from './App';
+import {RtlProvider} from "./RtlProvider.tsx";
 
 ReactDOM.render(
-    <div dir="rtl">
+    <RtlProvider>
         <App/>
-    </div>,
+    </RtlProvider>,
     document.getElementById('root')
 );

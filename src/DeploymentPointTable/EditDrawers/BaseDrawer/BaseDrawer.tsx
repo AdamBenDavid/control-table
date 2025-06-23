@@ -11,7 +11,7 @@ interface BaseDrawerProps extends DrawerProps {
 
 export const BaseDrawer: React.FC<BaseDrawerProps> = ({
                                                           children,
-                                                          anchor = 'left',
+                                                          anchor = 'right',
                                                           open,
                                                           onClose,
                                                           width = 576,
