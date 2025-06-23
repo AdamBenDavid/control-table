@@ -7,7 +7,6 @@ const App: React.FC = () => {
 
     return (
         <div
-            dir="rtl"
             style={{
                 height: '100vh',
                 width: '100vw',
@@ -16,7 +15,6 @@ const App: React.FC = () => {
                 alignItems: 'center'
             }}>
             <div
-                dir="rtl"
                 style={{
                     width: '75%',
                     maxHeight: '65vh',

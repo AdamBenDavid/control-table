@@ -1,0 +1,26 @@
+.drawer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: flex-end;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 24px;
+  font-family: heebo, serif;
+  color: #535862;
+  padding: 24px 35px 24px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  padding: 28px 36px;
+  gap: 16px;
+  height: 103px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: white;
+  box-shadow: 0px -3px 8px rgba(173, 173, 173, 0.15);
+}

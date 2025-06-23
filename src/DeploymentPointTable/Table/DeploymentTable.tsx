@@ -19,6 +19,7 @@ import arrowButton from '../icons/Arrow.svg';
 import {useState} from "react";
 import Button from "@material-ui/core/Button";
 import {DeploymentPointDataDrawer} from "../EditDrawers/DeploymentPointDataDrawer/DeploymentPointDataDrawer.tsx";
+import {DirectionDrawer} from "../EditDrawers/DirectionsDrawer/DirectionDrawer.tsx";
 
 interface Props {
     data: DeploymentPoint[];
@@ -29,14 +30,20 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
 
     const [isEditing, setIsEditing] = useState(false);
     const toggleEditing = () => setIsEditing(!isEditing);
-    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [deploymentPointDataDrawer, setDeploymentPointDataDrawer] = useState(false);
+    const [directionDrawer, setDirectionDrawer] = useState(false);
     const [selectedPoint, setSelectedPoint] = useState<DeploymentPoint | null>(null);
     const [dataState, setDataState] = useState<DeploymentPoint[]>(data);
 
-    const onEdit = (point: DeploymentPoint) => {
+    const OnDirectionEdit = (point: DeploymentPoint) => {
+        setSelectedPoint(point);
+        setDirectionDrawer(true);
+    };
+
+    const onDeploymentPointDataEdit = (point: DeploymentPoint) => {
         if (isEditing) {
             setSelectedPoint(point);
-            setDrawerOpen(true);
+            setDeploymentPointDataDrawer(true);
         }
     };
 
@@ -46,7 +53,7 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
         );
 
         setDataState(newData);
-        setDrawerOpen(false);
+        setDeploymentPointDataDrawer(false);
         setSelectedPoint(null);
     };
 
@@ -88,13 +95,13 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
                 <Table>
                     <TableHead className={styles.header}>
                         <TableRow>
-                            <TableCell align="right" style={{fontWeight: 700, color: '#717680'}}>שם נק׳
+                            <TableCell align="left" style={{fontWeight: 700, color: '#717680'}}>שם נק׳
                                 פריסה</TableCell>
-                            <TableCell align="right" style={{fontWeight: 700, color: '#717680'}}>נ.צ</TableCell>
-                            <TableCell align="right" style={{fontWeight: 700, color: '#717680'}}>חטיבה</TableCell>
-                            <TableCell align="right" style={{fontWeight: 700, color: '#717680'}}>כיוונים
+                            <TableCell align="left" style={{fontWeight: 700, color: '#717680'}}>נ.צ</TableCell>
+                            <TableCell align="left" style={{fontWeight: 700, color: '#717680'}}>חטיבה</TableCell>
+                            <TableCell align="left" style={{fontWeight: 700, color: '#717680'}}>כיוונים
                                 ממופים</TableCell>
-                            <TableCell align="right" style={{fontWeight: 700, color: '#717680'}}>יוזרים
+                            <TableCell align="left" style={{fontWeight: 700, color: '#717680'}}>יוזרים
                                 מקושרים</TableCell>
                             {isEditing && (
                                 <TableCell align="center" style={{fontWeight: 700, color: '#717680'}}>פעולות</TableCell>
@@ -104,34 +111,34 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
                     <TableBody>
                         {dataState.map((point, i) => (
                             <TableRow key={i}>
-                                <TableCell align="right"
+                                <TableCell align="left"
                                            className={`${styles.cell} ${isEditing ? styles.underlineOnHover : ''} ${styles.cellWithDivider}`}>
                                     <div
                                         className={isEditing ? styles.clickableCell : undefined}
-                                        onClick={() => onEdit(point)}
+                                        onClick={() => onDeploymentPointDataEdit(point)}
                                     >
                                         {point.name}
                                     </div>
                                 </TableCell>
-                                <TableCell align="right"
+                                <TableCell align="left"
                                            className={`${styles.cell} ${isEditing ? styles.underlineOnHover : ''} ${styles.cellWithDivider}`}>
                                     <div
                                         className={isEditing ? styles.clickableCell : undefined}
-                                        onClick={() => onEdit(point)}
+                                        onClick={() => onDeploymentPointDataEdit(point)}
                                     >
                                         {`${point.coordinates.lat}/${point.coordinates.lng}`}
                                     </div>
                                 </TableCell>
-                                <TableCell align="right"
+                                <TableCell align="left"
                                            className={`${styles.cell} ${isEditing ? styles.underlineOnHover : ''} ${styles.cellWithDivider}`}>
                                     <div
                                         className={isEditing ? styles.clickableCell : undefined}
-                                        onClick={() => onEdit(point)}
+                                        onClick={() => onDeploymentPointDataEdit(point)}
                                     >
                                         {point.division}
                                     </div>
                                 </TableCell>
-                                <TableCell align="right" className={styles.cellWithDivider}>
+                                <TableCell align="left" className={styles.cellWithDivider}>
                                     <div className={styles.directionColumn}>
                                         <div className={styles.directionLabel}>
                                             <span className={styles.directionCount}>{point.directions.length}</span>
@@ -139,13 +146,12 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
                                         {point.directions.map(d => DeploymentDirections[d]).join('/')}
                                      </span>
                                         </div>
-                                        <Button onClick={() => {
-                                        }}>
+                                        <Button onClick={() => OnDirectionEdit(point)}>
                                             <img src={arrowButton} alt="Arrow" className={styles.directionArrowIcon}/>
                                         </Button>
                                     </div>
                                 </TableCell>
-                                <TableCell align="right"
+                                <TableCell align="left"
                                            className={styles.cellWithDivider}>
                                     <div className={styles.directionColumn}>
                                         <span className={styles.users}>{point.linkedUsersCount}</span>
@@ -169,12 +175,17 @@ export const DeploymentTable: React.FC<Props> = ({data, onDelete}) => {
                 </Table>
             </TableContainer>
             <DeploymentPointDataDrawer
-                open={drawerOpen}
+                open={deploymentPointDataDrawer}
                 onClose={() => {
-                    setDrawerOpen(false);
+                    setDeploymentPointDataDrawer(false);
                     setSelectedPoint(null);
                 }}
-                anchor="left"
+                point={selectedPoint}
+                onSave={handlePointUpdate}
+            />
+            <DirectionDrawer
+                open={directionDrawer}
+                onClose={() => setDirectionDrawer(false)}
                 point={selectedPoint}
                 onSave={handlePointUpdate}
             />

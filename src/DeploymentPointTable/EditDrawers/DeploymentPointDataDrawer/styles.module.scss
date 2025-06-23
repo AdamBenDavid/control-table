@@ -42,18 +42,6 @@
   gap: 10px;
 }
 
-.buttonSection {
-  display: flex;
-  flex-direction: row;
-  padding: 28px 36px;
-  gap: 16px;
-  height: 103px;
-  width: 100%;
-  box-sizing: border-box;
-  background-color: white;
-  box-shadow: 0px -3px 8px rgba(173, 173, 173, 0.15);
-}
-
 .saveButton {
   background-color: rgba(75, 100, 215, 1);
   border-radius: 30px;
@@ -94,6 +82,6 @@
 }
 
 .formControl {
-  width: 250px;
+  width: 180px;
   direction: rtl;
 }
