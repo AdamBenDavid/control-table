@@ -25,11 +25,6 @@ export const DirectionCard: React.FC<Props> = ({}) => {
                 <div className={styles.title}>
                     <span>מיקום פריסת הרשד"ג</span>
                 </div>
-
-                <div className={styles.input}>
-                    {/* Add input field or custom content here */}
-                </div>
-
                 <FormControl variant="standard" className={styles.input}>
                     <InputLabel>בחר אופציה</InputLabel>
                     <Select value={selectedOption} onChange={handleChange}>
@@ -38,7 +33,6 @@ export const DirectionCard: React.FC<Props> = ({}) => {
                         <MenuItem value="option3">אופציה 3</MenuItem>
                     </Select>
                 </FormControl>
-
                 <div className={styles.deploymentPointMap}>
                     <span>map preview picture</span>
                 </div>
