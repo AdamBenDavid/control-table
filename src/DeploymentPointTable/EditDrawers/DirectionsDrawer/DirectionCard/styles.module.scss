@@ -1,31 +1,35 @@
 .container {
-  width: 495px;
-  height: 321px;
+  border: 1px solid #d5d5d5;
   border-radius: 8px;
   padding: 16px;
-  border: 1px solid #D5D5D5; // or Gray/300
+  width: 495px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
 }
 
-.cardBody {
-  align-items: flex-end;
+.topRow {
+  display: flex;
+  justify-content: flex-start;
 }
 
 .deleteIcon {
+  padding: 0;
+  min-width: 0;
+}
 
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 30px;
 }
 
 .title {
   font-weight: 700;
   font-size: 14px;
-  font-family: heebo, serif;
-  color: #121212;
 }
 
 .input {
-}
-
-.deploymentPointMap {
+  width: 100%;
 }
