@@ -14,27 +14,30 @@ interface Props {
 
 
 export const DirectionDrawer: React.FC<Props> = ({open, onClose, point}) => {
-    const onSubmit = () => {
-    }
+    // const onSubmit = () => {
+    // }
 
     return (
-        <BaseDrawer open={open} onClose={onClose}>
+        <BaseDrawer open={open}
+                    onClose={onClose}
+                    title={point?.name ? `${point.name} - עריכת נקודת פריסה` : 'עריכת נקודת פריסה'}
+                    footer={
+                        <div>
+                            <Button
+                                style={{backgroundColor: '#4B64D7', borderRadius: '30px', color: 'white'}}
+                                onClick={() => {
+                                }}
+                            >
+                                שנה ושמור
+                            </Button>
+                            <Button style={{color: '#4B64D7'}} onClick={onClose}>
+                                ביטול
+                            </Button>
+                        </div>
+                    }
+        >
             <div className={styles.container}>
-                <span className={styles.title}>
-                    {point?.name} - עריכת נקודת פריסה
-                </span>
                 <DirectionCard/>
-            </div>
-            <div className={styles.buttonSection}>
-                <Button
-                    style={{backgroundColor: '#4B64D7', borderRadius: '30px', color: 'white'}}
-                    onClick={onSubmit}
-                >
-                    שנה ושמור
-                </Button>
-                <Button style={{color: '#4B64D7'}} onClick={onClose}>
-                    ביטול
-                </Button>
             </div>
         </BaseDrawer>
     );

@@ -4,17 +4,22 @@ import styles from './styles.module.scss';
 import React from "react";
 
 interface BaseDrawerProps extends DrawerProps {
-    children: React.ReactNode;
     anchor?: 'left' | 'right' | 'top' | 'bottom';
     width?: string | number;
+    title?: string;
+    footer?: React.ReactNode;
 }
+
+const DRAWER_DEFAULT_WIDTH = 576;
 
 export const BaseDrawer: React.FC<BaseDrawerProps> = ({
                                                           children,
                                                           anchor = 'right',
                                                           open,
                                                           onClose,
-                                                          width = 576,
+                                                          width = DRAWER_DEFAULT_WIDTH,
+                                                          title,
+                                                          footer,
                                                           ...rest
                                                       }) => {
     return (
@@ -26,8 +31,10 @@ export const BaseDrawer: React.FC<BaseDrawerProps> = ({
             {...rest}
         >
             <div className={styles.drawer} style={{width}}>
-                {children}
+                {title && <div className={styles.title}>{title}</div>}
+                <div className={styles.drawerContent}>{children}</div>
             </div>
+            {footer && <div className={styles.footer}>{footer}</div>}
         </Drawer>
     );
 };

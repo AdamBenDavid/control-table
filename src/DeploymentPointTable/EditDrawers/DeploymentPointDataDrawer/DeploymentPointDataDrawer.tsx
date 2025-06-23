@@ -76,11 +76,24 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, point
     }, [point, reset]);
 
     return (
-        <BaseDrawer open={open} onClose={onClose}>
+        <BaseDrawer open={open}
+                    onClose={onClose}
+                    title={point ? `${point.name} - עריכת נקודת פריסה` : 'עריכת נקודת פריסה'}
+                    footer={
+                        <div>
+                            <Button
+                                style={{backgroundColor: '#4B64D7', borderRadius: '30px', color: 'white'}}
+                                onClick={handleSubmit(onSubmit)}
+                            >
+                                שנה ושמור
+                            </Button>
+                            <Button style={{color: '#4B64D7'}} onClick={onClose}>
+                                ביטול
+                            </Button>
+                        </div>
+                    }
+        >
             <div className={styles.container}>
-                <span className={styles.title}>
-                    {point?.name} - עריכת נקודת פריסה
-                </span>
                 <div className={styles.titleAndInput}>
                     <span className={styles.inputTitle}>שם נקודת פריסה</span>
                     <Controller
@@ -159,7 +172,7 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, point
                                     classes={{icon: styles.selectIcon}}
                                     MenuProps={{
                                         PaperProps: {
-                                            style: {direction: 'rtl', textAlign: 'right'},
+                                            style: {direction: 'rtl'},
                                         },
                                     }}
                                 >
@@ -176,17 +189,6 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, point
                         )}
                     />
                 </div>
-            </div>
-            <div className={styles.buttonSection}>
-                <Button
-                    style={{backgroundColor: '#4B64D7', borderRadius: '30px', color: 'white'}}
-                    onClick={handleSubmit(onSubmit)}
-                >
-                    שנה ושמור
-                </Button>
-                <Button style={{color: '#4B64D7'}} onClick={onClose}>
-                    ביטול
-                </Button>
             </div>
         </BaseDrawer>
     );

@@ -1,14 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './styles.module.scss';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import {FormControl, MenuItem, Select, InputLabel} from '@material-ui/core';
+import {FormControl, InputLabel, MenuItem, Select} from '@material-ui/core';
 
 interface Props {
 }
 
 export const DirectionCard: React.FC<Props> = ({}) => {
-    const [selectedOption, setSelectedOption] = React.useState('');
+    const [selectedOption, setSelectedOption] = useState('');
 
     const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         setSelectedOption(event.target.value as string);
@@ -25,12 +25,19 @@ export const DirectionCard: React.FC<Props> = ({}) => {
                 <div className={styles.title}>
                     <span>מיקום פריסת הרשד"ג</span>
                 </div>
-                <FormControl variant="standard" className={styles.input}>
+                <FormControl variant="standard" className={styles.formControl}>
                     <InputLabel>בחר אופציה</InputLabel>
-                    <Select value={selectedOption} onChange={handleChange}>
-                        <MenuItem value="option1">אופציה 1</MenuItem>
-                        <MenuItem value="option2">אופציה 2</MenuItem>
-                        <MenuItem value="option3">אופציה 3</MenuItem>
+                    <Select value={selectedOption}
+                            onChange={handleChange}
+                            MenuProps={{
+                                PaperProps: {
+                                    style: {direction: 'rtl'},
+                                },
+                            }}>
+                        <MenuItem value="option1">צפון</MenuItem>
+                        <MenuItem value="option2">דרום</MenuItem>
+                        <MenuItem value="option3">מזרח</MenuItem>
+                        <MenuItem value="option3">מערב</MenuItem>
                     </Select>
                 </FormControl>
                 <div className={styles.deploymentPointMap}>
