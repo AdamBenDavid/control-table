@@ -1,1 +1,1 @@
-export * from './ManagementPage';
+    export * from './ManagementPage';

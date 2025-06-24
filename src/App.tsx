@@ -6,6 +6,7 @@ import './app.scss'
 const queryClient = new QueryClient()
 
 const App: React.FC = () => {
+    console.log('App component rendered');
   return (
       <QueryClientProvider client={queryClient}>
         <ManagementPage/>

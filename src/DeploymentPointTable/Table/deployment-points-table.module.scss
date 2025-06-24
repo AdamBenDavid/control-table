@@ -1,9 +1,25 @@
+@use '../../styles/theme' as *;
+
+$table-border-color: hsl(240, 17%, 98%);
+$table-row-height: 72px;
+
 .tableContainer {
   background-color: white;
-  border: 1px solid #E9EAEB;
+  border: 1px solid $table-border-color;
   border-radius: 12px;
-  padding: 1rem;
-  width: 70%;
+  width: 100%;
+
+  :global(.MuiTableRow-root) {
+    height: $table-row-height !important;
+  }
+
+  :global(.MuiTableCell-root) {
+    height: $table-row-height !important;
+  }
+}
+
+.table {
+  min-height: 500px;
 }
 
 .headerRow {
@@ -11,11 +27,14 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #E9EAEB;
+  padding: 16px 20px;
 }
 
 .cellWithDivider {
-  border-left: 1px solid #e0e0e0;
+  border-left: 1px solid $table-border-color;
+  border-right: 1px solid $table-border-color;
+
+  height: 100%;
 }
 
 .underlineOnHover {
@@ -27,14 +46,14 @@
   }
 }
 
-.title {
-  padding: 15px 24px 15px;
+.header {
+  font-weight: 600;
 }
 
-.header {
-  background: #e9eaeb;
+.headerCell {
+  background-color: hsl(240, 17%, 98%);
   font-weight: 600;
-  border: 1px solid #e0e0e0;
+  border: 1px solid $table-border-color;
   padding: 6px 12px;
 }
 
@@ -78,22 +97,18 @@
 
 
 .editButton {
-  background: #ffffff;
-  border: 1px solid #e0e0e0;
-  border-radius: 33px;
-  font-family: heebo, serif;
-  font-weight: lighter;
-  margin-left: 24px;
+  @include outlined-text-icon-button(white, #565657);
+  font-weight: 700;
+  font-size: 12px;
 }
 
 .saveButton {
-  background: #4B64D7;
-  border: 1px solid #e0e0e0;
+
+  @include icon-button;
   border-radius: 33px;
   color: #ffffff;
-  font-family: heebo, serif;
-  font-weight: lighter;
-  margin-left: 24px;
+  font-weight: 700;
+  font-size: 12px;
 }
 
 .directionArrowIcon {
@@ -106,12 +121,12 @@
   margin-right: 70px;
 }
 
-.deleteTooltip {
+.deleteButton {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 72px;
   transition: all 0.2s ease-in-out;
+  height: 100%;
 
   & > img {
     width: 20px;
@@ -130,30 +145,43 @@
 
 .paginationFooter {
   display: flex;
-  align-items: center;
+  justify-content: space-between;
   padding: 12px 16px;
   font-size: 14px;
   direction: rtl;
+  gap: 16px;
+
+  .footerRight {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+
+  .footerLeft {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2rem;
+  }
 }
 
 .paginationInfo {
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .paginationButtons {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
 }
 
 .paginationButton {
-  width: 16px;
-  height: 16px;
-  aspect-ratio: 1;
+  @include icon-button(white, black);
   padding: 0;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  background-color: #f5f5f5;
 }
 
+.actionsHeader {
+  width: 256px;
+}

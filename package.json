@@ -6,11 +6,24 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix"
+    ],
+    "*.tsx": [
+      "eslint --fix"
+    ]
   },
   "devDependencies": {
+    "@eslint/js": "^9.25.0",
     "@types/react": "^17.0.67",
     "@types/react-dom": "^17.0.22",
+    "@vitejs/plugin-react": "^4.4.1",
     "agrippa": "^2.0.4",
     "eslint": "^9.25.0",
     "eslint-config-prettier": "^10.1.5",
@@ -28,17 +41,19 @@
     "lint-staged": "^16.1.2",
     "sass-embedded": "^1.89.2",
     "typescript": "~5.8.3",
-    "typescript-eslint": "^8.30.1",
     "vite": "^6.3.5"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.8.0",
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
     "@tanstack/react-query": "^5.81.2",
     "@tanstack/react-table": "^8.21.3",
+    "axios": "^1.10.0",
     "clsx": "^2.1.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-hook-form": "^7.58.1"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.58.1",
+    "typescript-eslint": "^8.34.1"
   }
 }

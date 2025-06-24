@@ -13,9 +13,9 @@ import importPlugin from 'eslint-plugin-import';
 import sonarjs from 'eslint-plugin-sonarjs';
 import promise from 'eslint-plugin-promise';
 
-/** @type {import("eslint").FlatConfig[]} */
+// /** @type {import("eslint").FlatConfig[]} */
 export default defineConfig([
-  { ignores: ['dist', './eslint.config.js', './agrippa.config.mjs'] },
+  { ignores: ['dist'] },
   js.configs.recommended,
   ...tsEslint.configs.recommended,
   reactHooks.configs['recommended-latest'],
@@ -34,7 +34,7 @@ export default defineConfig([
       globals: globals.browser,
       parserOptions: {
         ecmaFeatures: { jsx: true },
-        // project: 'tsconfig.json',
+        project: 'tsconfig.app.json',
       },
     },
     plugins: {
@@ -54,8 +54,8 @@ export default defineConfig([
       'sonarjs/prefer-read-only-props': 'off',
       '@typescript-eslint/no-require-imports': 'off',
     },
-    settings: {
-      react: { version: 'detect' },
-    },
+    // settings: {
+    //   react: { version: 'detect' },
+    // },
   },
 ]);

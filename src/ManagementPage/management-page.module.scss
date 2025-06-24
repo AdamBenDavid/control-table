@@ -3,9 +3,14 @@
   background-color: #f0f0f0;
   display: flex;
   flex-direction: column;
-  height: 100%;
   justify-content: center;
-  padding: 5rem;
+  padding: 5rem 10rem;
   width: 100%;
+  min-height: 100vh;
+  gap: 2rem;
   box-sizing: border-box;
+}
+
+.searchInput {
+  align-self: flex-start;
 }
