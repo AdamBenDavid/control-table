@@ -1,4 +1,4 @@
-import {createColumnHelper} from '@tanstack/react-table';
+import {type ColumnDef, createColumnHelper} from '@tanstack/react-table';
 import {type DeploymentPoint} from '../types';
 import {DeploymentDirections} from '../directions';
 import Button from '@material-ui/core/Button';
@@ -10,9 +10,23 @@ import {TABLE_ACTIONS_COLUMN_ID} from "./table.const.ts";
 
 const columnHelper = createColumnHelper<DeploymentPoint>();
 
+export type SizeConfig = Pick<ColumnDef<DeploymentPoint>, 'size' | 'minSize' | 'maxSize'>;
+export type Size = 'large' | 'medium';
+
+export const SizeConfigMap: Record<Size, SizeConfig> = {
+    large: {
+        size: 444,
+    },
+    medium: {
+        size: 269.5,
+        minSize: 215.6
+    },
+}
+
 export const deploymentPointsTableColumns = [
     columnHelper.accessor('name', {
         header: 'שם נק׳ פריסה',
+        ...SizeConfigMap.large,
         cell: (info) => {
             const {isEditing, onEdit} = info.table.options.meta;
             return (
@@ -26,7 +40,7 @@ export const deploymentPointsTableColumns = [
     columnHelper.accessor((dp) => `${dp.coordinates.lat}/${dp.coordinates.lng}`, {
         id: 'coordinates',
         header: 'נ.צ',
-        meta: {},
+        ...SizeConfigMap.medium,
         cell: (info) => {
             const {isEditing, onEdit} = info.table.options.meta;
             return (
@@ -39,6 +53,7 @@ export const deploymentPointsTableColumns = [
     }),
     columnHelper.accessor('division', {
         header: 'חטיבה',
+        ...SizeConfigMap.medium,
         cell: (info) => {
             const {isEditing, onEdit} = info.table.options.meta;
 
@@ -53,6 +68,7 @@ export const deploymentPointsTableColumns = [
     columnHelper.display({
         id: 'directions',
         header: 'כיוונים ממופים',
+        ...SizeConfigMap.medium,
         cell: (info) => (
             <div className={styles.directionColumn}>
                 <div className={styles.directionDetails}>
@@ -70,6 +86,7 @@ export const deploymentPointsTableColumns = [
     columnHelper.display({
         id: 'linkedUsers',
         header: 'יוזרים מקושרים',
+        ...SizeConfigMap.medium,
         cell: (info) => (
             <div className={styles.directionColumn}>
                 <span className={styles.users}>{info.row.original.linkedUsersCount}</span>
@@ -82,6 +99,7 @@ export const deploymentPointsTableColumns = [
     columnHelper.display({
         id: TABLE_ACTIONS_COLUMN_ID,
         header: '',
+        ...SizeConfigMap.medium,
         cell: (info) => {
             const {onDelete} = info.table.options.meta;
 

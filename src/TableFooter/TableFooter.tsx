@@ -17,8 +17,9 @@ export interface TableFooterProps {
         onClick: () => void;
         disabled: boolean;
     };
-    onPageSizeChange: (newSize: number) => void;
+    onPageSizeChange?: (newSize: number) => void;
     totalRowsLabel?: string;
+    totalRowsSuffix?: string;
     pageSizeOptions?: number[];
 }
 
@@ -29,8 +30,10 @@ export const TableFooter: React.FC<TableFooterProps> = ({
                                                             nextPage,
                                                             prevPage,
                                                             onPageSizeChange,
+                                                            totalItems,
                                                             totalRowsLabel,
-                                                            pageSizeOptions = [5, 10, 20, 50],
+                                                            totalRowsSuffix,
+                                                            pageSizeOptions,
                                                         }) => {
     return (
         <div className={styles.paginationFooter}>
@@ -57,7 +60,7 @@ export const TableFooter: React.FC<TableFooterProps> = ({
             </div>
 
             <div className={styles.footerLeft}>
-                <div className={styles.pageSizeSelector}>
+                {pageSizeOptions && onPageSizeChange && <div className={styles.pageSizeSelector}>
                     <label htmlFor="pageSize">כמות שורות בעמוד</label>
                     <Select
                         id="pageSize"
@@ -70,10 +73,15 @@ export const TableFooter: React.FC<TableFooterProps> = ({
                             </MenuItem>
                         ))}
                     </Select>
-                </div>
-                {totalRowsLabel && <div className={styles.totalCount}>
-                    {`${totalRowsLabel}`}
                 </div>}
+                {totalRowsLabel ?
+                    <div className={styles.totalCount}>
+                        {totalRowsLabel}
+                    </div> :
+                    <div className={styles.totalCount}>
+                        {`${totalItems} ${totalRowsSuffix ?? ''}`}
+                    </div>
+                }
             </div>
         </div>
     );

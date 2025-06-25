@@ -26,20 +26,22 @@ export const ManagementPage = ({}: ManagementPageProps) => {
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(event.target.value);
     };
-    
+
     return (
         <div className={classes.managementPage}>
-            <Input className={classes.searchInput} onChange={handleSearchChange} value={search}
-                   placeholder='חפש נקודות פריסה'/>
-            <DeploymentPointsManagementTable
-                onDelete={() => {
-                }}
-                setIsEditing={setIsEditing}
-                onEdit={onEdit}
-                isEditing={isEditing}
-                search={search}
-            />
-            <DeploymentPointDataDrawer
+            <div className={classes.tableSection}>
+                <Input className={classes.searchInput} onChange={handleSearchChange} value={search}
+                       placeholder='חפש נקודות פריסה'/>
+                <DeploymentPointsManagementTable
+                    onDelete={() => {
+                    }}
+                    setIsEditing={setIsEditing}
+                    onEdit={onEdit}
+                    isEditing={isEditing}
+                    search={search}
+                />
+            </div>
+            {selectedPoint && <DeploymentPointDataDrawer
                 open={drawerOpen}
                 point={selectedPoint}
                 onClose={() => {
@@ -50,7 +52,7 @@ export const ManagementPage = ({}: ManagementPageProps) => {
                     setDrawerOpen(false);
                     setSelectedPoint(null);
                 }}
-            />
+            />}
         </div>
     );
 };

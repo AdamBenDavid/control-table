@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {flexRender, getCoreRowModel, useReactTable,} from '@tanstack/react-table';
-import {Table, TableBody, TableCell, TableHead, TableRow, Typography,} from '@material-ui/core';
+import {Table, TableBody, TableCell, TableHead, TableRow,} from '@material-ui/core';
 import styles from './deployment-points-table.module.scss';
 import type {DeploymentPoint} from '../types';
 import editIcon from '../icons/Edit.svg';
@@ -9,8 +9,12 @@ import {deploymentPointsTableColumns} from './columns.tsx';
 import {isActionsColumnCell} from "./table.utils.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {TABLE_PAGE_SIZE} from "./table.const.ts";
-import {DeploymentPointService} from "../../api/deployment-points.api.ts";
 import {TableFooter} from "../../TableFooter";
+import Skeleton from 'react-loading-skeleton'
+import {generateMockDeploymentPoints} from "../mockData.ts";
+import {DeploymentPointService} from "../../api/deployment-points.api.ts";
+import {cloneDeep} from 'lodash';
+
 
 interface Props {
     onDelete: (row: DeploymentPoint) => void;
@@ -33,25 +37,43 @@ export const DeploymentPointsManagementTable: React.FC<Props> = ({
         pageSize: TABLE_PAGE_SIZE
     });
 
+
+    const adjustedColumns = cloneDeep(deploymentPointsTableColumns).map((col) => {
+        if ('size' in col && 'minSize' in col) {
+            return {
+                ...col,
+                size: isEditing && col.minSize ? col.minSize : col.size,
+            };
+        }
+        return col;
+    });
+
+
+    const [totalItems, setTotalItems] = useState(0);
+
     const {data, isLoading} = useQuery({
         queryKey: ['deployment-points', pagination.pageIndex, pagination.pageSize, search],
-        queryFn: async () =>
-            DeploymentPointService.getDeploymentPointsMock({
+        queryFn: async () => {
+            const response = await DeploymentPointService.getDeploymentPointsMock({
                 pageSize: pagination.pageSize,
                 pageIndex: pagination.pageIndex,
                 search,
-            }),
-        placeholderData: (prevData) => prevData,
+            })
+
+            setTotalItems(response.total);
+
+            return response
+        }
     });
 
 
     const table = useReactTable({
-        data: data?.data || [],
-        columns: deploymentPointsTableColumns,
+        data: data?.data || generateMockDeploymentPoints(TABLE_PAGE_SIZE),
+        columns: adjustedColumns,
         getCoreRowModel: getCoreRowModel(),
         manualPagination: true,
         debugTable: true,
-        pageCount: data ? Math.ceil(data.total / pagination.pageSize) : 0,
+        pageCount: totalItems ? Math.ceil(totalItems / pagination.pageSize) : 0,
         state: {
             columnVisibility: {
                 actions: isEditing
@@ -66,15 +88,11 @@ export const DeploymentPointsManagementTable: React.FC<Props> = ({
         },
     });
 
-    if (!data || isLoading) {
-        return <div>Loading...</div>;
-    }
-
 
     return (
         <div className={styles.tableContainer}>
             <div className={styles.headerRow}>
-                <Typography className={styles.title}>נקודות פריסה</Typography>
+                <h2 className={styles.title}>נקודות פריסה</h2>
                 <button
                     className={isEditing ? styles.saveButton : styles.editButton}
                     onClick={() => setIsEditing(!isEditing)}
@@ -104,7 +122,7 @@ export const DeploymentPointsManagementTable: React.FC<Props> = ({
                     ))}
                 </TableHead>
 
-                <TableBody>
+                <TableBody className={styles.tableBody}>
                     {table.getRowModel().rows.map((row) => (
                         <TableRow key={row.id} className={styles.tableRow}>
                             {row.getVisibleCells().map((cell) => {
@@ -116,7 +134,9 @@ export const DeploymentPointsManagementTable: React.FC<Props> = ({
                                                    padding: 0,
                                                } : {}}
                                                className={styles.cellWithDivider}>
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        {isLoading || !data ?
+                                            <Skeleton/> :
+                                            flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </TableCell>
                                 )
                             })}
@@ -127,7 +147,7 @@ export const DeploymentPointsManagementTable: React.FC<Props> = ({
             <TableFooter
                 pageIndex={pagination.pageIndex}
                 pageSize={pagination.pageSize}
-                totalItems={data.total}
+                totalItems={data?.total ?? 0}
                 pageCount={table.getPageCount()}
                 prevPage={{
                     onClick: () => table.previousPage(),
@@ -137,10 +157,7 @@ export const DeploymentPointsManagementTable: React.FC<Props> = ({
                     onClick: () => table.nextPage(),
                     disabled: !table.getCanNextPage(),
                 }}
-                onPageSizeChange={(newSize) =>
-                    setPagination({...pagination, pageSize: newSize, pageIndex: 0})
-                }
-                totalRowsLabel={`סה"כ נקודות פריסה: ${data.total}`}
+                totalRowsSuffix={'תוצאות'}
             />
         </div>
     );

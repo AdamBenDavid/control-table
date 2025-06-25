@@ -12,7 +12,7 @@ import {type DeploymentPointForm, DeploymentPointFormSchema} from "./form.types.
 interface Props {
     open: boolean;
     onClose: () => void;
-    point: DeploymentPoint | null;
+    point: DeploymentPoint;
     onSave: (updatedPoint: DeploymentPoint) => void;
 }
 
@@ -20,16 +20,30 @@ const numericInputProps: InputBaseComponentProps = {
     maxLength: 8,
     style: {fontSize: '14px'},
     inputMode: 'numeric',
-    pattern: '[0-9]*',
+    pattern: '^-?\\d*\\.?\\d*$', // allow negative and decimals
 };
+
+const initialValues: Omit<DeploymentPoint, 'id'> = {
+    name: '',
+    coordinates: {
+        lat: 0,
+        lng: 0,
+    },
+    division: Divisions.D417,
+    directions: [],
+    linkedUsersCount: 0
+}
 
 const handleNumericChange =
     (onChange: (val: string) => void) =>
         (e: React.ChangeEvent<HTMLInputElement>) => {
-            const onlyDigits = e.target.value.replace(/\D/g, '');
-            onChange(onlyDigits);
+            const raw = e.target.value;
+            const cleaned = raw
+                .replace(/[^\d.-]/g, '')
+                .replace(/(?!^)-/g, '')
+                .replace(/(\..*)\./g, '$1');
+            onChange(cleaned);
         };
-
 
 export const DeploymentPointDataDrawer: React.FC<Props> = ({
                                                                open,
@@ -44,12 +58,7 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({
         reset,
     } = useForm<DeploymentPointForm>({
         resolver: zodResolver(DeploymentPointFormSchema),
-        defaultValues: {
-            deploymentName: '',
-            lat: '',
-            lng: '',
-            division: '',
-        },
+        defaultValues: initialValues
     });
 
     const onSubmit = (data: DeploymentPointForm) => {
@@ -58,8 +67,8 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({
             ...point,
             name: data.deploymentName,
             coordinates: {
-                lat: Number(data.lat),
-                lng: Number(data.lng),
+                lat: data.lat,
+                lng: data.lng,
             },
             division: data.division as Division,
         };
@@ -70,8 +79,8 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({
         if (point) {
             reset({
                 deploymentName: point.name,
-                lat: point.coordinates.lat.toString(),
-                lng: point.coordinates.lng.toString(),
+                lat: point.coordinates.lat,
+                lng: point.coordinates.lng,
                 division: point.division,
             });
         }

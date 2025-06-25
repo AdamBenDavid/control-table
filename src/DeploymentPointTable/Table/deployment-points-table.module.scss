@@ -2,24 +2,28 @@
 
 $table-border-color: hsl(240, 17%, 98%);
 $table-row-height: 72px;
+$table-header-height: 44px;
 
 .tableContainer {
   background-color: white;
   border: 1px solid $table-border-color;
   border-radius: 12px;
-  width: 100%;
 
-  :global(.MuiTableRow-root) {
-    height: $table-row-height !important;
-  }
 
-  :global(.MuiTableCell-root) {
-    height: $table-row-height !important;
+  :global(.MuiTableCell-head) {
+    height: $table-header-height !important;
+    padding: 0 16px;
   }
 }
 
 .table {
   min-height: 500px;
+}
+
+.tableBody {
+  :global(.MuiTableRow-root) {
+    height: $table-row-height !important;
+  }
 }
 
 .headerRow {
@@ -28,6 +32,11 @@ $table-row-height: 72px;
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
+
+  .title {
+    font-size: 24px;
+    font-weight: 700;
+  }
 }
 
 .cellWithDivider {
@@ -126,7 +135,8 @@ $table-row-height: 72px;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease-in-out;
-  height: 100%;
+  height: $table-row-height;
+
 
   & > img {
     width: 20px;
