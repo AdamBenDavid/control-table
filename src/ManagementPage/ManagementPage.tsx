@@ -26,10 +26,7 @@ export const ManagementPage = ({}: ManagementPageProps) => {
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(event.target.value);
     };
-
-    console.log(search)
-
-
+    
     return (
         <div className={classes.managementPage}>
             <Input className={classes.searchInput} onChange={handleSearchChange} value={search}
