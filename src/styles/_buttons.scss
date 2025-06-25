@@ -17,6 +17,7 @@ $action-border-radius: 2rem;
   @include g.centerflex;
   color: $text;
   background-color: $back;
+  font-weight: 600;
 
   &:disabled {
     cursor: not-allowed !important;
@@ -47,7 +48,7 @@ $action-border-radius: 2rem;
   }
 }
 
-@mixin trans-button($back: c.$action, $text: c.$primary) {
+@mixin trans-button($back: c.$action, $text: white) {
   @include base-button($back, $text);
   transition: all 0.2s ease;
 
@@ -160,8 +161,7 @@ $action-border-radius: 2rem;
     padding: $border-width;
     background: $gradient;
     border-radius: inherit;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;

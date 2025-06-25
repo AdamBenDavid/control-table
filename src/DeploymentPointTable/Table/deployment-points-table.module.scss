@@ -143,45 +143,6 @@ $table-row-height: 72px;
   }
 }
 
-.paginationFooter {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 16px;
-  font-size: 14px;
-  direction: rtl;
-  gap: 16px;
-
-  .footerRight {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 1rem;
-  }
-
-  .footerLeft {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 2rem;
-  }
-}
-
-.paginationInfo {
-  font-weight: 600;
-}
-
-.paginationButtons {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
-}
-
-.paginationButton {
-  @include icon-button(white, black);
-  padding: 0;
-}
-
 .actionsHeader {
   width: 256px;
 }

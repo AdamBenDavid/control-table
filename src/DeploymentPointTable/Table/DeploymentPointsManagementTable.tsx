@@ -1,17 +1,16 @@
 import React, {useState} from 'react';
 import {flexRender, getCoreRowModel, useReactTable,} from '@tanstack/react-table';
-import {Select, Table, TableBody, TableCell, TableHead, TableRow, Typography,} from '@material-ui/core';
+import {Table, TableBody, TableCell, TableHead, TableRow, Typography,} from '@material-ui/core';
 import styles from './deployment-points-table.module.scss';
 import type {DeploymentPoint} from '../types';
 import editIcon from '../icons/Edit.svg';
 import saveButton from '../icons/save.svg';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {deploymentPointsTableColumns} from './columns.tsx';
 import {isActionsColumnCell} from "./table.utils.tsx";
 import {useQuery} from "@tanstack/react-query";
-import {TABLE_PAGE_SIZE, TABLE_PAGE_SIZES_OPTIONS} from "./table.const.ts";
+import {TABLE_PAGE_SIZE} from "./table.const.ts";
 import {DeploymentPointService} from "../../api/deployment-points.api.ts";
+import {TableFooter} from "../../TableFooter";
 
 interface Props {
     onDelete: (row: DeploymentPoint) => void;
@@ -45,8 +44,6 @@ export const DeploymentPointsManagementTable: React.FC<Props> = ({
         placeholderData: (prevData) => prevData,
     });
 
-
-    console.log({data, pagination})
 
     const table = useReactTable({
         data: data?.data || [],
@@ -82,8 +79,8 @@ export const DeploymentPointsManagementTable: React.FC<Props> = ({
                     className={isEditing ? styles.saveButton : styles.editButton}
                     onClick={() => setIsEditing(!isEditing)}
                 >
-                    <img src={isEditing ? saveButton : editIcon} alt='Edit' className={styles.icon}/>
-                    {isEditing ? 'צא ממצב עריכה' : 'עריכה'}
+                    {!isEditing && <img src={isEditing ? saveButton : editIcon} alt='Edit' className={styles.icon}/>}
+                    {isEditing ? 'סיום עריכה' : 'עריכה'}
                 </button>
             </div>
 
@@ -93,7 +90,7 @@ export const DeploymentPointsManagementTable: React.FC<Props> = ({
                         <TableRow key={headerGroup.id}>
                             {headerGroup.headers.map((header) => {
                                 return (
-                                    <TableCell key={header.id} colSpan={header.colSpan} align={'right'}
+                                    <TableCell key={header.id} colSpan={header.colSpan}
                                                style={{width: `${header.getSize()}px`}}
                                                className={styles.headerCell}>
                                         {header.isPlaceholder ? null : (
@@ -114,7 +111,7 @@ export const DeploymentPointsManagementTable: React.FC<Props> = ({
                                 const isActionsCell = isActionsColumnCell(cell);
                                 return (
                                     <TableCell key={cell.id}
-                                               align={isActionsCell ? 'center' : 'right'}
+                                               align={isActionsCell ? 'center' : 'left'}
                                                style={isActionsCell ? {
                                                    padding: 0,
                                                } : {}}
@@ -127,56 +124,24 @@ export const DeploymentPointsManagementTable: React.FC<Props> = ({
                     ))}
                 </TableBody>
             </Table>
-            <div className={styles.paginationFooter}>
-
-                <div className={styles.footerRight}>
-                    <div className={styles.paginationButtons}>
-                        <button
-                            onClick={() => table.previousPage()}
-                            disabled={!table.getCanPreviousPage()}
-                            className={styles.paginationButton}
-                        >
-                            <ChevronRightIcon/>
-                        </button>
-                        <button
-                            onClick={() => table.nextPage()}
-                            disabled={!table.getCanNextPage()}
-                            className={styles.paginationButton}
-                        >
-                            <ChevronLeftIcon/>
-                        </button>
-                    </div>
-                    <div className={styles.paginationInfo}>
-                        {`עמוד ${pagination.pageIndex + 1} מתוך ${table.getPageCount()}`}
-                    </div>
-                </div>
-
-                <div className={styles.footerLeft}>
-                    <div className={styles.pageSizeSelector}>
-                        <label htmlFor="pageSize">מספר פריטים בעמוד:</label>
-                        <Select
-                            id="pageSize"
-                            value={pagination.pageSize}
-                            onChange={(e) => {
-                                setPagination({
-                                    ...pagination,
-                                    pageSize: Number(e.target.value),
-                                    pageIndex: 0,
-                                });
-                            }}
-                        >
-                            {TABLE_PAGE_SIZES_OPTIONS.map((size) => (
-                                <option key={size} value={size}>
-                                    {size}
-                                </option>
-                            ))}
-                        </Select>
-                    </div>
-                    <div className={styles.totalCount}>
-                        {`סה"כ נקודות פריסה: ${data.total}`}
-                    </div>
-                </div>
-            </div>
+            <TableFooter
+                pageIndex={pagination.pageIndex}
+                pageSize={pagination.pageSize}
+                totalItems={data.total}
+                pageCount={table.getPageCount()}
+                prevPage={{
+                    onClick: () => table.previousPage(),
+                    disabled: !table.getCanPreviousPage(),
+                }}
+                nextPage={{
+                    onClick: () => table.nextPage(),
+                    disabled: !table.getCanNextPage(),
+                }}
+                onPageSizeChange={(newSize) =>
+                    setPagination({...pagination, pageSize: newSize, pageIndex: 0})
+                }
+                totalRowsLabel={`סה"כ נקודות פריסה: ${data.total}`}
+            />
         </div>
     );
 };

@@ -44,7 +44,6 @@ export const ManagementPage = ({}: ManagementPageProps) => {
             />
             <DeploymentPointDataDrawer
                 open={drawerOpen}
-                anchor='left'
                 point={selectedPoint}
                 onClose={() => {
                     setDrawerOpen(false);

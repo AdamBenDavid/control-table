@@ -1,0 +1,38 @@
+.container {
+  border: 1px solid #d5d5d5;
+  border-radius: 8px;
+  padding: 16px;
+  width: 495px;
+  display: flex;
+  flex-direction: column;
+}
+
+.topRow {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.deleteIcon {
+  padding: 0;
+  min-width: 0;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 14px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+
+.formControl {
+  width: 100%;
+  direction: rtl;
+}
+
