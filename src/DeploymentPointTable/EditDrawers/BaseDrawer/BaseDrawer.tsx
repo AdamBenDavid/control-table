@@ -13,13 +13,13 @@ interface BaseDrawerProps extends DrawerProps {
     confirmButtonProps?: {
         label?: string;
         onClick?: () => void;
-        className?: string; // CSS color or class
+        className?: string;
     };
 
     cancelButtonProps?: {
         label?: string;
         onClick?: () => void;
-        className?: string; // CSS color or class
+        className?: string;
     };
 }
 

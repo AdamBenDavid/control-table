@@ -12,7 +12,7 @@ import {type DeploymentPointForm, DeploymentPointFormSchema} from "./form.types.
 interface Props {
     open: boolean;
     onClose: () => void;
-    point: DeploymentPoint;
+    point: DeploymentPoint | null;
     onSave: (updatedPoint: DeploymentPoint) => void;
 }
 
@@ -20,18 +20,14 @@ const numericInputProps: InputBaseComponentProps = {
     maxLength: 8,
     style: {fontSize: '14px'},
     inputMode: 'numeric',
-    pattern: '^-?\\d*\\.?\\d*$', // allow negative and decimals
+    pattern: '^-?\\d*\\.?\\d*$',
 };
 
-const initialValues: Omit<DeploymentPoint, 'id'> = {
+const initialValues: DeploymentPointForm = {
     name: '',
-    coordinates: {
-        lat: 0,
-        lng: 0,
-    },
+    lat: 0,
+    lng: 0,
     division: Divisions.D417,
-    directions: [],
-    linkedUsersCount: 0
 }
 
 const handleNumericChange =
@@ -65,7 +61,7 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({
         if (!point) return;
         const updatedPoint: DeploymentPoint = {
             ...point,
-            name: data.deploymentName,
+            name: data.name,
             coordinates: {
                 lat: data.lat,
                 lng: data.lng,
@@ -78,7 +74,7 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({
     useEffect(() => {
         if (point) {
             reset({
-                deploymentName: point.name,
+                name: point.name,
                 lat: point.coordinates.lat,
                 lng: point.coordinates.lng,
                 division: point.division,
@@ -101,11 +97,10 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({
             }}
         >
             <div className={styles.container}>
-                {/* Name */}
                 <div className={styles.titleAndInput}>
                     <span className={styles.inputTitle}>שם נקודת פריסה</span>
                     <Controller
-                        name="deploymentName"
+                        name="name"
                         control={control}
                         render={({field}) => (
                             <TextField
@@ -113,8 +108,8 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({
                                 dir="rtl"
                                 {...field}
                                 inputProps={{style: {fontSize: '14px'}, maxLength: 20}}
-                                error={!!errors.deploymentName}
-                                helperText={errors.deploymentName?.message}
+                                error={!!errors.name}
+                                helperText={errors.name?.message}
                             />
                         )}
                     />

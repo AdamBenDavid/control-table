@@ -41,7 +41,7 @@ export const ManagementPage = ({}: ManagementPageProps) => {
                     search={search}
                 />
             </div>
-            {selectedPoint && <DeploymentPointDataDrawer
+            <DeploymentPointDataDrawer
                 open={drawerOpen}
                 point={selectedPoint}
                 onClose={() => {
@@ -52,7 +52,7 @@ export const ManagementPage = ({}: ManagementPageProps) => {
                     setDrawerOpen(false);
                     setSelectedPoint(null);
                 }}
-            />}
+            />
         </div>
     );
 };
