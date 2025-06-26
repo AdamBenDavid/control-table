@@ -1,12 +1,13 @@
 import React, {useEffect} from 'react';
-import Button from '@material-ui/core/Button';
 import styles from './styles.module.scss';
 import TextField from '@material-ui/core/TextField';
-import {FormControl, type InputBaseComponentProps, MenuItem, Select,} from '@material-ui/core';
-import {type Division, Divisions} from "../../divisions.ts";
-import type {DeploymentPoint} from "../../types.ts";
+import {FormControl, type InputBaseComponentProps, MenuItem, Select} from '@material-ui/core';
+import {type Division, Divisions} from '../../divisions';
+import {type DeploymentPoint} from '../../types';
 import {Controller, useForm} from 'react-hook-form';
-import {BaseDrawer} from "../BaseDrawer/BaseDrawer.tsx";
+import {BaseDrawer} from '../BaseDrawer/BaseDrawer';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {type DeploymentPointForm, DeploymentPointFormSchema} from "./form.types.ts";
 
 interface Props {
     open: boolean;
@@ -19,47 +20,53 @@ const numericInputProps: InputBaseComponentProps = {
     maxLength: 8,
     style: {fontSize: '14px'},
     inputMode: 'numeric',
-    pattern: '[0-9]*',
+    pattern: '^-?\\d*\\.?\\d*$',
 };
 
-const handleNumericChange = (onChange: (val: string) => void) =>
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-        const onlyDigits = e.target.value.replace(/\D/g, '');
-        onChange(onlyDigits);
-    };
-
-type FormData = {
-    deploymentName: string;
-    lat: string;
-    lng: string;
-    division: Division | '';
+const initialValues: DeploymentPointForm = {
+    name: '',
+    lat: 0,
+    lng: 0,
+    division: Divisions.D417,
 }
 
-export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, point, onSave}) => {
+const handleNumericChange =
+    (onChange: (val: string) => void) =>
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const raw = e.target.value;
+            const cleaned = raw
+                .replace(/[^\d.-]/g, '')
+                .replace(/(?!^)-/g, '')
+                .replace(/(\..*)\./g, '$1');
+            onChange(cleaned);
+        };
+
+export const DeploymentPointDataDrawer: React.FC<Props> = ({
+                                                               open,
+                                                               onClose,
+                                                               point,
+                                                               onSave,
+                                                           }) => {
     const {
         control,
         handleSubmit,
         formState: {errors},
         reset,
-    } = useForm<FormData>({
-        defaultValues: {
-            deploymentName: '',
-            lat: '',
-            lng: '',
-            division: '',
-        },
+    } = useForm<DeploymentPointForm>({
+        resolver: zodResolver(DeploymentPointFormSchema),
+        defaultValues: initialValues
     });
 
-    const onSubmit = (data: FormData) => {
+    const onSubmit = (data: DeploymentPointForm) => {
         if (!point) return;
         const updatedPoint: DeploymentPoint = {
             ...point,
-            name: data.deploymentName,
+            name: data.name,
             coordinates: {
-                lat: Number(data.lat),
-                lng: Number(data.lng),
+                lat: data.lat,
+                lng: data.lng,
             },
-            division: data.division,
+            division: data.division as Division,
         };
         onSave(updatedPoint);
     };
@@ -67,52 +74,47 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, point
     useEffect(() => {
         if (point) {
             reset({
-                deploymentName: point.name,
-                lat: point.coordinates.lat.toString(),
-                lng: point.coordinates.lng.toString(),
-                division: point.division as Division,
+                name: point.name,
+                lat: point.coordinates.lat,
+                lng: point.coordinates.lng,
+                division: point.division,
             });
         }
     }, [point, reset]);
 
     return (
-        <BaseDrawer open={open}
-                    onClose={onClose}
-                    title={point ? `${point.name} - עריכת נקודת פריסה` : 'עריכת נקודת פריסה'}
-                    footer={
-                        <div>
-                            <Button
-                                style={{backgroundColor: '#4B64D7', borderRadius: '30px', color: 'white'}}
-                                onClick={handleSubmit(onSubmit)}
-                            >
-                                שנה ושמור
-                            </Button>
-                            <Button style={{color: '#4B64D7'}} onClick={onClose}>
-                                ביטול
-                            </Button>
-                        </div>
-                    }
+        <BaseDrawer
+            open={open}
+            onClose={onClose}
+            title={point ? `${point.name} - עריכת נקודת פריסה` : 'עריכת נקודת פריסה'}
+            confirmButtonProps={{
+                label: 'שנה ושמור',
+                onClick: handleSubmit(onSubmit),
+            }}
+            cancelButtonProps={{
+                label: 'ביטול',
+                onClick: onClose,
+            }}
         >
             <div className={styles.container}>
                 <div className={styles.titleAndInput}>
                     <span className={styles.inputTitle}>שם נקודת פריסה</span>
                     <Controller
-                        name="deploymentName"
+                        name="name"
                         control={control}
-                        rules={{required: true}}
                         render={({field}) => (
                             <TextField
                                 variant="standard"
                                 dir="rtl"
                                 {...field}
                                 inputProps={{style: {fontSize: '14px'}, maxLength: 20}}
-                                error={!!errors.deploymentName}
-                                helperText={errors.deploymentName && 'יש לבחור שם לנקודת פריסה'}
-                                FormHelperTextProps={{style: {textAlign: 'right'}}}
+                                error={!!errors.name}
+                                helperText={errors.name?.message}
                             />
                         )}
                     />
                 </div>
+
                 <div className={styles.titleAndInput}>
                     <span className={styles.inputTitle}>נ.צ</span>
                     <div className={styles.coordinates}>
@@ -120,7 +122,6 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, point
                         <Controller
                             name="lat"
                             control={control}
-                            rules={{required: true, minLength: 8}}
                             render={({field}) => (
                                 <TextField
                                     variant="standard"
@@ -129,8 +130,7 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, point
                                     onChange={handleNumericChange(field.onChange)}
                                     inputProps={numericInputProps}
                                     error={!!errors.lat}
-                                    helperText={errors.lat && 'יש להזין לפחות 8 ספרות'}
-                                    FormHelperTextProps={{style: {textAlign: 'right'}}}
+                                    helperText={errors.lat?.message}
                                 />
                             )}
                         />
@@ -139,7 +139,6 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, point
                         <Controller
                             name="lng"
                             control={control}
-                            rules={{required: true, minLength: 8}}
                             render={({field}) => (
                                 <TextField
                                     variant="standard"
@@ -148,19 +147,18 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, point
                                     onChange={handleNumericChange(field.onChange)}
                                     inputProps={numericInputProps}
                                     error={!!errors.lng}
-                                    helperText={errors.lng && 'יש להזין לפחות 8 ספרות'}
-                                    FormHelperTextProps={{style: {textAlign: 'right'}}}
+                                    helperText={errors.lng?.message}
                                 />
                             )}
                         />
                     </div>
                 </div>
+
                 <div className={styles.titleAndInput}>
                     <span className={styles.inputTitle}>חטיבה</span>
                     <Controller
                         name="division"
                         control={control}
-                        rules={{required: true}}
                         render={({field}) => (
                             <FormControl
                                 variant="standard"
@@ -171,9 +169,7 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, point
                                     {...field}
                                     classes={{icon: styles.selectIcon}}
                                     MenuProps={{
-                                        PaperProps: {
-                                            style: {direction: 'rtl'},
-                                        },
+                                        PaperProps: {style: {direction: 'rtl'}},
                                     }}
                                 >
                                     {Object.values(Divisions).map((name) => (
@@ -183,7 +179,9 @@ export const DeploymentPointDataDrawer: React.FC<Props> = ({open, onClose, point
                                     ))}
                                 </Select>
                                 {errors.division && (
-                                    <span className={styles.divisionErrorText}>יש לבחור חטיבה</span>
+                                    <span className={styles.divisionErrorText}>
+                    {errors.division.message}
+                  </span>
                                 )}
                             </FormControl>
                         )}

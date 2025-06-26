@@ -1,3 +1,5 @@
+@use '../../../styles/theme' as *;
+
 .drawer {
   display: flex;
   flex-direction: column;
@@ -13,6 +15,7 @@
   flex-grow: 1;
   gap: 30px;
 }
+
 
 .title {
   font-weight: 700;
@@ -40,11 +43,6 @@
   align-items: center;
   flex-direction: row-reverse;
   gap: 10px;
-}
-
-.saveButton {
-  background-color: rgba(75, 100, 215, 1);
-  border-radius: 30px;
 }
 
 .selectIcon {

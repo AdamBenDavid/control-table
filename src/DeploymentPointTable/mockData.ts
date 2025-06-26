@@ -1,60 +1,25 @@
+import {faker} from '@faker-js/faker';
 import type {DeploymentPoint} from './types';
 
-export const mockDeploymentPoints: DeploymentPoint[] = [
-    {
-        id: 1,
-        name: 'צומת גני',
-        coordinates: {lat: 12345678, lng: 12345678},
-        division: 'עציון',
-        directions: ['NORTH', 'SOUTH', 'EAST', 'WEST'],
-        linkedUsersCount: 32,
-    },
-    {
-        id: 2,
-        name: 'צומת מגוש',
-        coordinates: {lat: 12345678, lng: 12345678},
-        division: 'מנשה',
-        directions: ['SOUTH', 'WEST'],
-        linkedUsersCount: 20,
-    },
-    {
-        id: 3,
-        name: 'צומת יעקב',
-        coordinates: {lat: 12345678, lng: 12345678},
-        division: 'עציון',
-        directions: ['NORTH', 'EAST', 'WEST'],
-        linkedUsersCount: 30,
-    },
-    {
-        id: 4,
-        name: 'צומת הלב',
-        coordinates: {lat: 12345678, lng: 12345678},
-        division: 'אפרים',
-        directions: ['WEST'],
-        linkedUsersCount: 14,
-    },
-    {
-        id: 5,
-        name: 'צומת החושך',
-        coordinates: {lat: 12345678, lng: 12345678},
-        division: 'בנימין',
-        directions: ['NORTH', 'EAST', 'WEST'],
-        linkedUsersCount: 12,
-    },
-    {
-        id: 6,
-        name: 'צומת האור',
-        coordinates: {lat: 12345678, lng: 12345678},
-        division: 'בנימין',
-        directions: ['NORTH', 'EAST', 'WEST'],
-        linkedUsersCount: 40,
-    },
-    {
-        id: 7,
-        name: 'צומת חוויות',
-        coordinates: {lat: 12345678, lng: 12345678},
-        division: '417',
-        directions: ['SOUTH', 'WEST'],
-        linkedUsersCount: 10,
-    },
-];
+const possibleDivisions = ['עציון', 'מנשה', 'אפרים', 'בנימין', '417'];
+const possibleDirections = ['NORTH', 'SOUTH', 'EAST', 'WEST'];
+
+export function generateMockDeploymentPoints(count: number): DeploymentPoint[] {
+    return Array.from({length: count}, (_, index) => {
+        const directions = faker.helpers.arrayElements(possibleDirections, faker.number.int({min: 1, max: 4}));
+
+        return {
+            id: index + 1,
+            name: `צומת ${faker.word.words({count: 1})}`,
+            coordinates: {
+                lat: Number(faker.location.latitude({min: 31.0, max: 33.0})), // Israel approx.
+                lng: Number(faker.location.latitude({min: 34.0, max: 36.0})), // Israel approx.
+            },
+            division: faker.helpers.arrayElement(possibleDivisions),
+            directions,
+            linkedUsersCount: faker.number.int({min: 1, max: 50}),
+        };
+    }) as DeploymentPoint[];
+}
+
+export const mockDeploymentPoints = generateMockDeploymentPoints(100);

@@ -1,0 +1,44 @@
+@use "sass:math";
+@use "sass:color";
+
+$primary: hsl(229, 64%, 57%);
+$action: hsl(229, 64%, 57%);
+$divider: hsl(216, 7%, 87%);
+$background: hsl(210, 28%, 93%);
+$accent: hsl(210, 41%, 31%);
+$action-outline-ghost: hsl(0, 0%, 72%);
+$hover: #eef2ff;
+
+$error: hsla(0, 84%, 20%, 1);
+$error-light: hsla(0, 84%, 85%, 1);
+$danger-light: hsl(0, 88%, 61%);
+$danger: hsl(0, 86%, 30%);
+$danger-dark: hsl(0, 84%, 29%);
+
+@mixin gradient($start, $end, $deg: 90deg) {
+  background: linear-gradient($deg, $start 0%, $end 100%);
+}
+
+@function gray-scale($lightness, $opacity: 1) {
+  @if math.unit($lightness) == "" {
+    $lightness: $lightness * 1%;
+  }
+  @return hsla(0, 0%, $lightness, $opacity);
+}
+
+@function darker($color, $amount) {
+  @return color.adjust($color, $lightness: -$amount);
+}
+
+@function lighter($color, $amount) {
+  @return color.adjust($color, $lightness: $amount);
+}
+
+:export {
+  primary: $primary;
+  action: $action;
+  divider: $divider;
+  background: $background;
+  accent: $accent;
+  error: $error;
+}

@@ -1,33 +1,17 @@
-// src/App.tsx
 import React from 'react';
-import {DeploymentTable} from "./DeploymentPointTable/Table/DeploymentTable.tsx";
-import {mockDeploymentPoints} from "./DeploymentPointTable/mockData.ts";
+import {ManagementPage} from './ManagementPage';
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import './app.scss'
+import 'react-loading-skeleton/dist/skeleton.css'
+
+const queryClient = new QueryClient()
 
 const App: React.FC = () => {
-
     return (
-        <div
-            style={{
-                height: '100vh',
-                width: '100vw',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}>
-            <div
-                style={{
-                    width: '75%',
-                    maxHeight: '65vh',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center'
-                }}>
-                <DeploymentTable data={mockDeploymentPoints} onDelete={() => {
-                }}/>
-            </div>
-        </div>
+        <QueryClientProvider client={queryClient}>
+            <ManagementPage/>
+        </QueryClientProvider>
     );
 };
-
 
 export default App;

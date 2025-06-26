@@ -1,0 +1,158 @@
+@use '../../styles/theme' as *;
+
+$table-border-color: hsl(240, 17%, 98%);
+$table-row-height: 72px;
+$table-header-height: 44px;
+
+.tableContainer {
+  background-color: white;
+  border: 1px solid $table-border-color;
+  border-radius: 12px;
+
+
+  :global(.MuiTableCell-head) {
+    height: $table-header-height !important;
+    padding: 0 16px;
+  }
+}
+
+.table {
+  min-height: 500px;
+}
+
+.tableBody {
+  :global(.MuiTableRow-root) {
+    height: $table-row-height !important;
+  }
+}
+
+.headerRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+
+  .title {
+    font-size: 24px;
+    font-weight: 700;
+  }
+}
+
+.cellWithDivider {
+  border-left: 1px solid $table-border-color;
+  border-right: 1px solid $table-border-color;
+
+  height: 100%;
+}
+
+.underlineOnHover {
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px; // Optional: makes it look cleaner
+  }
+}
+
+.header {
+  font-weight: 600;
+}
+
+.headerCell {
+  background-color: hsl(240, 17%, 98%);
+  font-weight: 600;
+  border: 1px solid $table-border-color;
+  padding: 6px 12px;
+}
+
+.numberStyle {
+  align-content: center;
+  color: #333333;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.directionLabel {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+}
+
+.directionCount {
+  @extend .numberStyle;
+}
+
+.users {
+  @extend .numberStyle;
+}
+
+.directionColumn {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.directionDetails {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.directionText {
+  color: #888888;
+  font-size: 13px;
+}
+
+
+.editButton {
+  @include outlined-text-icon-button(white, #565657);
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.saveButton {
+
+  @include icon-button;
+  border-radius: 33px;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.directionArrowIcon {
+  margin-left: 5px;
+  margin-right: 15px;
+}
+
+.usersArrowIcon {
+  margin-left: 5px;
+  margin-right: 70px;
+}
+
+.deleteButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+  height: $table-row-height;
+
+
+  & > img {
+    width: 20px;
+    aspect-ratio: 1;
+  }
+
+  &:hover {
+    background-color: #FFE9EC;
+    cursor: pointer;
+  }
+
+  &:active {
+    background-color: #FFC9CD;
+  }
+}
+
+.actionsHeader {
+  width: 256px;
+}
